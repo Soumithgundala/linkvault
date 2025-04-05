@@ -1,0 +1,29 @@
+{
+    "project_info": {
+      "project_number": "364673225195",
+      "project_id": "linkvault-c721c",
+      "storage_bucket": "linkvault-c721c.firebasestorage.app"
+    },
+    "client": [
+      {
+        "client_info": {
+          "mobilesdk_app_id": "1:364673225195:android:43cbbc34f46a1e14eac9ae",
+          "android_client_info": {
+            "package_name": "app.json"
+          }
+        },
+        "oauth_client": [],
+        "api_key": [
+          {
+            "current_key": "AIzaSyBk0zxJBEhZWDWhgiFeMyY6kL-Xz8fvQEc"
+          }
+        ],
+        "services": {
+          "appinvite_service": {
+            "other_platform_oauth_client": []
+          }
+        }
+      }
+    ],
+    "configuration_version": "1"
+  }
