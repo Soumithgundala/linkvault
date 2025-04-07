@@ -1,0 +1,232 @@
+/* Global page container */
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f3f4f6;
+  }
+  
+  /* Card container for the login form */
+  .login-card {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 24px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Login Title */
+  .login-title {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #333;
+  }
+  
+  /* Form styles */
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  /* Input fields */
+  .login-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+  }
+  
+  .login-input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  }
+  
+  /* Login button */
+  .login-button {
+    width: 100%;
+    background-color: #2563eb;
+    color: #fff;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .login-button:hover {
+    background-color: #1d4ed8;
+  }
+  
+  /* Error message */
+  .error-message {
+    margin-top: 16px;
+    color: #dc2626;
+    text-align: center;
+  }
+  
+  /* Success message */
+  .success-title {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    color: #16a34a;
+    margin-bottom: 1rem;
+  }
+  
+  /* Search section for logged-in users */
+  .search-section {
+    margin-top: 1.5rem;
+  }
+  
+  .search-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+  }
+  
+  .search-input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  }
+  
+  .search-button {
+    width: 100%;
+    background-color: #16a34a;
+    color: #fff;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 8px;
+  }
+  
+  .search-button:hover {
+    background-color: #138f47;
+  }
+  
+  /* Profile card */
+  .profile-card {
+    margin-top: 1.5rem;
+    padding: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .profile-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+  }
+  
+  .profile-link {
+    color: #2563eb;
+    text-decoration: underline;
+    transition: color 0.3s;
+  }
+  
+  .profile-link:hover {
+    color: #1d4ed8;
+  }
+  /* src/styles/account.css */
+
+/* Container for the signup card */
+.signup-card {
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 24px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Title styling */
+  .signup-title {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 24px;
+    color: #333;
+  }
+  
+  /* Form container styling */
+  .signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  /* Input field styling */
+  .signup-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  
+  .signup-input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+    outline: none;
+  }
+  
+  /* Sign up button styling */
+  .signup-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .signup-button:hover {
+    background-color: #1d4ed8;
+  }
+  
+  /* Error message styling */
+  .error-message {
+    margin-top: 16px;
+    color: #dc2626;
+    text-align: center;
+  }
+  
+  /* Forgot password link styling */
+  .forgot-password {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 12px;
+    font-size: 0.9rem;
+    color: #2563eb;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  .forgot-password:hover {
+    color: #1d4ed8;
+  }
+  
+  /* Add a lock icon before the forgot password text */
+  .forgot-password::before {
+    content: "\1F512"; /* Unicode lock icon */
+    margin-right: 8px;
+  }
+  

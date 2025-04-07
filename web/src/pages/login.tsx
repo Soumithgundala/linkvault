@@ -3,7 +3,8 @@ import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "@/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import { useRouter } from 'next/navigation'; // Import useRouter
+import { useRouter } from "next/navigation";
+import "@/styles/account.css"; 
 
 // Define the profile data interface
 interface ProfileData {
@@ -27,9 +28,9 @@ function isFirebaseError(error: unknown): error is FirebaseErrorType {
     typeof error === "object" &&
     error !== null &&
     "code" in error &&
-    typeof (error as any).code === "string" &&
+    typeof (error as FirebaseErrorType).code === "string" &&
     "message" in error &&
-    typeof (error as any).message === "string"
+    typeof (error as FirebaseErrorType).message === "string"
   );
 }
 
@@ -41,7 +42,7 @@ export default function Login() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [profile, setProfile] = useState<ProfileData | null>(null);
-    const router = useRouter(); // Initialize useRouter
+  const router = useRouter(); // Initialize useRouter
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -50,7 +51,7 @@ export default function Login() {
       setIsLoggedIn(true);
       setSuccessMessage("Login successful!");
       setErrorMessage("");
-      router.push('/profile'); // Redirect to profile page after login
+      router.push("/profile"); // Redirect to profile page after login
     } catch (error: unknown) {
       if (isFirebaseError(error)) {
         if (error.code === "auth/user-not-found") {
@@ -85,18 +86,18 @@ export default function Login() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="max-w-md mx-auto p-6 bg-white rounded shadow-lg mt-10">
+    <div className="login-page">
+      <div className="login-card">
         {!isLoggedIn ? (
           <>
-            <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">Login</h1>
-            <form onSubmit={handleLogin} className="space-y-4">
+            <h1 className="login-title">Login</h1>
+            <form onSubmit={handleLogin} className="login-form">
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email"
-                className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="login-input"
                 required
               />
               <input
@@ -104,48 +105,41 @@ export default function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
-                className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="login-input"
                 required
               />
-              <button
-                type="submit"
-                className="w-full bg-blue-600 text-white p-3 rounded hover:bg-blue-700 transition duration-300"
-              >
+              <button type="submit" className="login-button">
                 Login
               </button>
+              <a href="/forgot" className="forgot-password">Forgot Password?</a>
             </form>
-            {errorMessage && <p className="mt-4 text-red-500 text-center">{errorMessage}</p>}
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
           </>
         ) : (
           <>
-            <h1 className="text-3xl font-bold text-center mb-4 text-green-600">{successMessage}</h1>
-            <div className="mt-6">
+            <h1 className="success-title">{successMessage}</h1>
+            <div className="search-section">
               <input
                 type="text"
                 placeholder="Search by username"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="search-input"
               />
-              <button
-                onClick={handleSearch}
-                className="w-full bg-green-600 text-white p-3 rounded mt-2 hover:bg-green-700 transition duration-300"
-              >
+              <button onClick={handleSearch} className="search-button">
                 Search Profile
               </button>
             </div>
             {profile && (
-              <div className="mt-6 border p-4 rounded shadow-md">
-                <h2 className="font-bold text-xl capitalize text-gray-800">
-                  {profile.username}
-                </h2>
+              <div className="profile-card">
+                <h2 className="profile-title">{profile.username}</h2>
                 <p>
                   Instagram:{" "}
                   <a
                     href={profile.socialLinks?.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-600 underline hover:text-blue-800 transition duration-300"
+                    className="profile-link"
                   >
                     {profile.socialLinks?.instagram}
                   </a>
@@ -156,7 +150,7 @@ export default function Login() {
                     href={profile.socialLinks?.twitter}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-600 underline hover:text-blue-800 transition duration-300"
+                    className="profile-link"
                   >
                     {profile.socialLinks?.twitter}
                   </a>
