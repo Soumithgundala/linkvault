@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "@/firebase";
+import "@/styles/globals.css"; 
 
 export default function Search() {
   const [searchTerm, setSearchTerm] = useState("");

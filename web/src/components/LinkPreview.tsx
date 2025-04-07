@@ -1,6 +1,7 @@
 import React from 'react';
 import { ExternalLink } from 'lucide-react';
 import Image from 'next/image';
+import "@/styles/globals.css"; 
 
 interface LinkPreviewProps {
   url: string;

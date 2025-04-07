@@ -1,7 +1,9 @@
+// src/pages/SignUp.tsx
 import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "@/firebase";
+import "@/styles/account.css"; 
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
@@ -23,7 +25,6 @@ export default function SignUp() {
       });
       // Redirect or show success message here
     } catch (error: unknown) {
-      // Explicitly cast error to an object with 'code' and 'message'
       const err = error as { code: string; message: string };
       if (err.code === "auth/email-already-in-use") {
         setErrorMessage("This email is already registered. Please log in or use a different email.");
@@ -37,15 +38,15 @@ export default function SignUp() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded shadow-lg mt-10">
-      <h1 className="text-3xl font-bold text-center mb-6">Create Your Account</h1>
-      <form onSubmit={handleSignUp} className="space-y-4">
+    <div className="signup-card">
+      <h1 className="signup-title">Create Your Account</h1>
+      <form onSubmit={handleSignUp} className="signup-form">
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Email"
-          className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+          className="signup-input"
           required
         />
         <input
@@ -53,7 +54,7 @@ export default function SignUp() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
-          className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+          className="signup-input"
           required
         />
         <input
@@ -61,7 +62,7 @@ export default function SignUp() {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Username"
-          className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+          className="signup-input"
           required
         />
         <input
@@ -69,20 +70,20 @@ export default function SignUp() {
           value={instagram}
           onChange={(e) => setInstagram(e.target.value)}
           placeholder="Instagram Link"
-          className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+          className="signup-input"
         />
         <input
           type="url"
           value={twitter}
           onChange={(e) => setTwitter(e.target.value)}
           placeholder="Twitter Link"
-          className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+          className="signup-input"
         />
-        <button type="submit" className="w-full bg-blue-600 text-white p-3 rounded hover:bg-blue-700 transition">
+        <button type="submit" className="signup-button">
           Sign Up
         </button>
       </form>
-      {errorMessage && <p className="mt-4 text-red-500 text-center">{errorMessage}</p>}
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
     </div>
   );
 }
