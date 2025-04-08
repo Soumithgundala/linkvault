@@ -13,7 +13,6 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   animation: card 0.5s ease forwards;
 }
-
 .signup-background {
   background-image: linear-gradient(to bottom, #f7f7f7, #fff);
   height: 100vh;
@@ -28,6 +27,54 @@
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   animation: card 0.5s ease forwards;
+}
+
+.signup-title {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.signup-input {
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.signup-button {
+  background-color: #333;
+  color: white;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.signup-button:hover {
+  background-color: #444;
+}
+
+.signin-link {
+  color: #333;
+  text-decoration: none;
+  margin-bottom: 1rem;
+}
+
+.error-message {
+  color: red;
 }
 
 @keyframes card {
