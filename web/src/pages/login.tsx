@@ -1,10 +1,12 @@
-// src/pages/login.tsx
 import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "@/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { useRouter } from "next/navigation";
-import "@/styles/account.css"; 
+import Link from "next/link";
+import Navbar from "@/components/navbar";
+import "@/styles/globals.css"; // Ensure this file contains the global styles
+import "@/styles/account.css"; // Ensure this file contains the styles
 
 // Define the profile data interface
 interface ProfileData {
@@ -34,6 +36,24 @@ function isFirebaseError(error: unknown): error is FirebaseErrorType {
   );
 }
 
+// // Navbar Component
+// function Navbar() {
+//   return (
+//     <nav className="navbar">
+//       <div className="navbar-container">
+//         <h1 className="navbar-title">
+//           <Link href="/">LinkVault</Link>
+//         </h1>
+//         <div className="navbar-links">
+//           <Link href="/login" className="navbar-link">Login</Link>
+//           <Link href="/signup" className="navbar-link">Sign up</Link>
+//         </div>
+//       </div>
+//     </nav>
+//   );
+// }
+
+// Login Component
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -42,7 +62,7 @@ export default function Login() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [profile, setProfile] = useState<ProfileData | null>(null);
-  const router = useRouter(); // Initialize useRouter
+  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -51,7 +71,7 @@ export default function Login() {
       setIsLoggedIn(true);
       setSuccessMessage("Login successful!");
       setErrorMessage("");
-      router.push("/profile"); // Redirect to profile page after login
+      router.push("/profile");
     } catch (error: unknown) {
       if (isFirebaseError(error)) {
         if (error.code === "auth/user-not-found") {
@@ -86,80 +106,85 @@ export default function Login() {
   };
 
   return (
-    <div className="login-page">
-      <div className="login-card">
-        {!isLoggedIn ? (
-          <>
-            <h1 className="login-title">Login</h1>
-            <form onSubmit={handleLogin} className="login-form">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email"
-                className="login-input"
-                required
-              />
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-                className="login-input"
-                required
-              />
-              <button type="submit" className="login-button">
-                Login
-              </button>
-              <a href="/forgot" className="forgot-password">Forgot Password?</a>
-            </form>
-            {errorMessage && <p className="error-message">{errorMessage}</p>}
-          </>
-        ) : (
-          <>
-            <h1 className="success-title">{successMessage}</h1>
-            <div className="search-section">
-              <input
-                type="text"
-                placeholder="Search by username"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="search-input"
-              />
-              <button onClick={handleSearch} className="search-button">
-                Search Profile
-              </button>
-            </div>
-            {profile && (
-              <div className="profile-card">
-                <h2 className="profile-title">{profile.username}</h2>
-                <p>
-                  Instagram:{" "}
-                  <a
-                    href={profile.socialLinks?.instagram}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="profile-link"
-                  >
-                    {profile.socialLinks?.instagram}
-                  </a>
-                </p>
-                <p>
-                  Twitter:{" "}
-                  <a
-                    href={profile.socialLinks?.twitter}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="profile-link"
-                  >
-                    {profile.socialLinks?.twitter}
-                  </a>
-                </p>
+    <>
+      <Navbar />
+      <div className="login-page">
+        <div className="login-card">
+          {!isLoggedIn ? (
+            <>
+              <h1 className="login-title">Login</h1>
+              <form onSubmit={handleLogin} className="login-form">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Email"
+                  className="login-input"
+                  required
+                />
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Password"
+                  className="login-input"
+                  required
+                />
+                <Link href="/signup" className="signup-link">
+                  Don&apos;t have an account? Sign Up
+                </Link>
+                <button type="submit" className="login-button">
+                  Login
+                </button>
+              </form>
+              {errorMessage && <p className="error-message">{errorMessage}</p>}
+            </>
+          ) : (
+            <>
+              <h1 className="success-title">{successMessage}</h1>
+              <div className="search-section">
+                <input
+                  type="text"
+                  placeholder="Search by username"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="search-input"
+                />
+                <button onClick={handleSearch} className="search-button">
+                  Search Profile
+                </button>
               </div>
-            )}
-          </>
-        )}
+              {profile && (
+                <div className="profile-card">
+                  <h2 className="profile-title">{profile.username}</h2>
+                  <p>
+                    Instagram:{" "}
+                    <a
+                      href={profile.socialLinks?.instagram}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="profile-link"
+                    >
+                      {profile.socialLinks?.instagram}
+                    </a>
+                  </p>
+                  <p>
+                    Twitter:{" "}
+                    <a
+                      href={profile.socialLinks?.twitter}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="profile-link"
+                    >
+                      {profile.socialLinks?.twitter}
+                    </a>
+                  </p>
+                </div>
+              )}
+            </>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

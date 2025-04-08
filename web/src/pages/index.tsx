@@ -112,10 +112,6 @@ export default function Home() {
           </section>
         )}
       </main>
-
-      <footer className="footer">
-        <p>© 2025 LinkVault. All rights reserved.</p>
-      </footer>
     </div>
   );
 }
