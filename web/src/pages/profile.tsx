@@ -1,223 +1,163 @@
-// src/pages/profile/[username].tsx
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
-import app  from '@/firebase';
-import Head from 'next/head';
-import Image from 'next/image';
-import Navbar from "@/components/navbar";
+// src/pages/profile.tsx
+import { useState } from 'react';
+import { auth } from '@/firebase'; // Update with your auth path
+import { addUserProfile } from '@/lib/db'; // Update with your database functions
+import Navbar from '@/components/navbar';
+import '@/styles/globals.css'; // Ensure this file contains the global styles
+import '@/styles/account.css'; // Ensure this file contains the styles
 
-interface Profile {
-  id: string;
+interface SocialProfile {
+  platform: string;
   username: string;
-  displayName?: string;
-  photoURL?: string;
-  bio?: string;
-  website?: string;
 }
 
-interface SocialLink {
-  id: string;
-  url: string;
-  profileId: string;
-}
-
-interface PlatformConfig {
-  name: string;
-  urlPattern: string;
-  icon: string;
-  color: string;
-}
-
-const platformPatterns: PlatformConfig[] = [
-  {
-    name: 'Instagram',
-    urlPattern: 'instagram.com/{username}',
-    icon: 'ri:instagram-fill',
-    color: '#E1306C'
-  },
-  {
-    name: 'Twitter',
-    urlPattern: 'x.com/{username}',
-    icon: 'ri:twitter-x-fill',
-    color: '#000000'
-  },
-  {
-    name: 'LinkedIn',
-    urlPattern: 'linkedin.com/in/{username}',
-    icon: 'ri:linkedin-fill',
-    color: '#0A66C2'
-  },
-  {
-    name: 'GitHub',
-    urlPattern: 'github.com/{username}',
-    icon: 'ri:github-fill',
-    color: '#181717'
-  },
-  {
-    name: 'Facebook',
-    urlPattern: 'facebook.com/{username}',
-    icon: 'ri:facebook-fill',
-    color: '#1877F2'
-  }
+const supportedPlatforms = [
+  { name: 'Instagram', baseUrl: 'instagram.com', icon: '📸', placeholder: 'your_username' },
+  { name: 'Twitter', baseUrl: 'twitter.com', icon: '🐦', placeholder: 'your_handle' },
+  { name: 'LinkedIn', baseUrl: 'linkedin.com/in', icon: '💼', placeholder: 'your-profile' },
+  { name: 'GitHub', baseUrl: 'github.com', icon: '🐙', placeholder: 'yourusername' },
+  { name: 'Facebook', baseUrl: 'facebook.com', icon: '📘', placeholder: 'your.profile' },
+  { name: 'YouTube', baseUrl: 'youtube.com/@', icon: '📺', placeholder: 'yourchannel' },
+  { name: 'TikTok', baseUrl: 'tiktok.com/@', icon: '🎵', placeholder: 'yourusername' },
+  { name: 'Snapchat', baseUrl: 'snapchat.com/add', icon: '👻', placeholder: 'yourusername' },
 ];
 
-export default function ProfilePage() {
-  const router = useRouter();
-  const { username } = router.query;
-  const [profile, setProfile] = useState<Profile | null>(null);
-  const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
-  const [loading, setLoading] = useState(true);
+export default function ProfileManager() {
+  const [selectedPlatform, setSelectedPlatform] = useState('');
+  const [username, setUsername] = useState('');
+  const [profiles, setProfiles] = useState<SocialProfile[]>([]);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        setLoading(true);
-        
-        if (!username) return;
+  const handleAddProfile = () => {
+    if (!selectedPlatform) {
+      setError('Please select a platform');
+      return;
+    }
+    
+    if (!username.trim()) {
+      setError('Please enter a username');
+      return;
+    }
 
-        const db = getFirestore(app);
-        const profilesRef = collection(db, 'profiles');
-        const q = query(profilesRef, where('username', '==', username));
-        const querySnapshot = await getDocs(q);
-
-        if (querySnapshot.empty) {
-          setError('Profile not found');
-          return;
-        }
-
-        const profileData = querySnapshot.docs[0].data() as Omit<Profile, 'id'>;
-        setProfile({
-          id: querySnapshot.docs[0].id,
-          ...profileData
-        });
-
-        const linksRef = collection(db, 'social_links');
-        const linksQuery = query(linksRef, where('profileId', '==', querySnapshot.docs[0].id));
-        const linksSnapshot = await getDocs(linksQuery);
-        
-        const linksData = linksSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        })) as SocialLink[];
-
-        setSocialLinks(linksData);
-      } catch (err) {
-        console.error('Error fetching profile:', err);
-        setError('Failed to load profile');
-      } finally {
-        setLoading(false);
-      }
+    const newProfile = {
+      platform: selectedPlatform,
+      username: username.trim()
     };
 
-    fetchProfile();
-  }, [username]);
+    setProfiles([...profiles, newProfile]);
+    setSelectedPlatform('');
+    setUsername('');
+    setError('');
+  };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-pulse text-gray-500">Loading profile...</div>
-      </div>
-    );
-  }
+  const handleRemoveProfile = (index: number) => {
+    setProfiles(profiles.filter((_, i) => i !== index));
+  };
 
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-red-500">{error}</div>
-      </div>
-    );
-  }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    try {
+      const user = auth.currentUser;
+      if (!user) throw new Error('User not authenticated');
+      
+      await addUserProfile(user.uid, profiles);
+      alert('Profiles saved successfully!');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to save profiles');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
     <Navbar/>
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <Head>
-        <title>{profile?.displayName || username} - LinkVault</title>
-        <meta name="description" content={profile?.bio || 'LinkVault Profile'} />
-        {profile?.photoURL && <meta property="og:image" content={profile.photoURL} />}
-      </Head>
+    <div className="profile-container">
+      <h1>Manage Social Profiles</h1>
+      
+      <div className="profile-form">
+        <div className="input-group">
+          <select 
+            value={selectedPlatform}
+            onChange={(e) => setSelectedPlatform(e.target.value)}
+            className="platform-select"
+          >
+            <option value="">Select Platform</option>
+            {supportedPlatforms.map((platform) => (
+              <option key={platform.name} value={platform.name}>
+                {platform.icon} {platform.name}
+              </option>
+            ))}
+          </select>
 
-      <div className="max-w-3xl mx-auto">
-        <div className="bg-white rounded-lg shadow-md p-8 mb-8">
-          <div className="flex items-center gap-6">
-            {profile?.photoURL && (
-              <Image
-                src={profile.photoURL}
-                alt={`${username}'s avatar`}
-                width={96}
-                height={96}
-                className="rounded-full object-cover border-4 border-white shadow-lg"
-              />
-            )}
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">
-                {profile?.displayName || username}
-              </h1>
-              {profile?.bio && (
-                <p className="mt-2 text-gray-600">{profile.bio}</p>
-              )}
-            </div>
-          </div>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder={
+              supportedPlatforms.find(p => p.name === selectedPlatform)?.placeholder || 'Username'
+            }
+            className="username-input"
+          />
+
+          <button 
+            type="button" 
+            onClick={handleAddProfile}
+            className="add-button"
+          >
+            Add Profile
+          </button>
         </div>
 
-        {socialLinks.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {socialLinks.map((link) => {
-              const platform = platformPatterns.find(p => 
-                link.url.includes(p.urlPattern.split('{username}')[0])
-              );
+        {error && <div className="error-message">{error}</div>}
 
-              return (
-                <a
-                  key={link.id}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-200 flex items-center gap-4"
-                  style={{ borderLeft: `4px solid ${platform?.color || '#6B7280'}` }}
+        {profiles.length > 0 && (
+          <form onSubmit={handleSubmit} className="profiles-list">
+            <h2>Your Profiles</h2>
+            
+            {profiles.map((profile, index) => (
+              <div key={index} className="profile-item">
+                <span className="platform-icon">
+                  {supportedPlatforms.find(p => p.name === profile.platform)?.icon}
+                </span>
+                <div className="profile-info">
+                  <span className="platform-name">{profile.platform}</span>
+                  <a
+                    href={`https://${
+                      supportedPlatforms.find(p => p.name === profile.platform)?.baseUrl
+                    }/${profile.username}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="profile-link"
+                  >
+                    {profile.username}
+                  </a>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => handleRemoveProfile(index)}
+                  className="remove-button"
                 >
-                  <span 
-                    className="text-2xl" 
-                    style={{ color: platform?.color || '#6B7280' }}
-                    dangerouslySetInnerHTML={{ __html: platform?.icon || '🌐' }}
-                  />
-                  <div>
-                    <h3 className="font-medium text-gray-900">
-                      {platform?.name || 'Website'}
-                    </h3>
-                    <p className="text-sm text-gray-500 truncate">
-                      {link.url.split('/').pop()}
-                    </p>
-                  </div>
-                </a>
-              );
-            })}
-          </div>
-        )}
+                  ×
+                </button>
+              </div>
+            ))}
 
-        {profile?.website && (
-          <div className="mt-8 bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Website</h2>
-            <a
-              href={profile.website}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 hover:underline"
+            <button 
+              type="submit" 
+              disabled={loading}
+              className="save-button"
             >
-              {profile.website}
-            </a>
-          </div>
+              {loading ? 'Saving...' : 'Save All Profiles'}
+            </button>
+          </form>
         )}
       </div>
     </div>
-    </>
+  </>
   );
-}
-
-export async function getServerSideProps() {
-  return { props: {} };
-
 }
