@@ -207,7 +207,7 @@ button:hover {
 }
 .navbar {
   background-color: #333;
-  padding: 1rem;
+  padding: 10rem;
   display: flex;
   justify-content: left;
 }
@@ -270,11 +270,15 @@ button:hover {
 }
 
 .dropdown-button {
+  position: absolute;
+  right: calc(0.9rem + 2cm); /* Move the button 2 cm to the left */
+  top: 5%; /* Center it vertically relative to the navbar */
+  transform: translateY(-50%); /* Adjust for vertical centering */
   cursor: pointer;
   display: flex;
-  justify-content: left;
-  align-items: left;
-  margin-left: 20px;
+  justify-content: center; /* Center the icon horizontally */
+  align-items: center; /* Center the icon vertically */
+  z-index:100;
 }
 
 .dropdown-icon {
