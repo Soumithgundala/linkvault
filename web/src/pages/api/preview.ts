@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ error: 'Missing or invalid URL' });
   }
 
-  const apiKey = process.env.LINK_PREVIEW_API_KEY;
+  const apiKey = "ca958b4a1ac736fe002bf468987eb7a2"
 
   try {
     const response = await fetch(`https://api.linkpreview.net/?key=${apiKey}&q=${encodeURIComponent(url)}`);
