@@ -1,59 +1,67 @@
-import React from 'react';
-import { ExternalLink } from 'lucide-react';
-import Image from 'next/image';
-import "@/styles/globals.css"; 
+// src/components/LinkPreview.tsx
+import { useState, useEffect } from 'react';
 
-interface LinkPreviewProps {
-  url: string;
+
+interface PreviewData {
   title?: string;
   description?: string;
   image?: string;
+  url?: string;
+  error?: string;
 }
 
-export default function LinkPreview({ url, title, description, image }: LinkPreviewProps) {
+export default function LinkPreview({ url }: { url: string }) {
+  const [preview, setPreview] = useState<PreviewData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPreview = async () => {
+      try {
+        const response = await fetch(`/api/preview?url=${encodeURIComponent(url)}`);
+        if (!response.ok) throw new Error('Preview failed');
+        const data = await response.json();
+        setPreview(data);
+      } catch {
+        setPreview({ error: 'Failed to load preview' });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPreview();
+  }, [url]);
+
+  if (loading) {
+    return <div className="preview-loading">Loading preview...</div>;
+  }
+
+  if (preview?.error) {
+    return <div className="preview-error">{preview.error}</div>;
+  }
+
   return (
-    <div className="max-w-2xl mx-auto mt-4">
-      <a 
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer" 
-        className="block bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200"
-      >
-        <div className="flex items-start p-4">
-          {image && (
-            <div className="flex-shrink-0 w-24 h-24 mr-4">
-              <Image
-                src={image}
-                alt={title || url}
-                layout="intrinsic"
-                objectFit="cover"
-                className="rounded-md"
-                width={96}
-                height={96}
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = '/default-image.png';
-                }}
-              />
-            </div>
-          )}
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-gray-900 truncate">
-                {title || url}
-              </h3>
-              <ExternalLink className="h-4 w-4 text-gray-500 flex-shrink-0 ml-2" />
-            </div>
-            {description && (
-              <p className="mt-1 text-sm text-gray-500 line-clamp-2">
-                {description}
-              </p>
-            )}
-            <p className="mt-1 text-xs text-gray-400 truncate">
-              {url}
-            </p>
-          </div>
+    <a href={url} target="_blank" rel="noopener noreferrer" className="preview-card">
+      {preview?.image && (
+        <div className="preview-image-container">
+          <image></image>
+            src={preview.image} 
+            alt={preview.title || 'Preview image'} 
+            className="preview-image"
+            loading="lazy"
+          />          
         </div>
-      </a>
-    </div>
+      )}
+      <div className="preview-content">
+        {preview?.url && (
+          <div className="preview-domain">
+            {new URL(preview.url).hostname}
+          </div>
+        )}
+        {preview?.title && <h3 className="preview-title">{preview.title}</h3>}
+        {preview?.description && (
+          <p className="preview-description">{preview.description}</p>
+        )}
+      </div>
+    </a>
   );
 }

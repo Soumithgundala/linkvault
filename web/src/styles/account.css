@@ -193,3 +193,34 @@
   gap: 1rem; /* Add spacing between items */
   margin-top: 2rem;
 }
+.view-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+}
+
+.view-title {
+  margin-bottom: 1rem;
+}
+
+.profiles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.profile-card {
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-username {
+  margin-bottom: 0.5rem;
+}
+
+.link-preview-container {
+  margin-bottom: 1rem;
+}

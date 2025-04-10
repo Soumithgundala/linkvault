@@ -362,3 +362,125 @@ button:hover {
   margin-top: 8px;
   text-align: center;
 }
+.view-page {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.view-title {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #2d3748;
+}
+
+.profiles-grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.profile-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-username {
+  color: #1a365d;
+  margin-bottom: 1rem;
+}
+
+.social-profile {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: #f7fafc;
+  border-radius: 6px;
+}
+
+.link-preview-container {
+  margin-top: 0.5rem;
+}
+
+.error-message {
+  color: #e53e3e;
+  text-align: center;
+  padding: 1rem;
+}
+/* Add these styles to your CSS */
+.preview-card {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+  text-decoration: none;
+  color: inherit;
+  margin: 1rem 0;
+}
+
+.preview-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.preview-image-container {
+  position: relative;
+  padding-top: 56.25%; /* 16:9 aspect ratio */
+  background: #f5f5f5;
+  overflow: hidden;
+}
+
+.preview-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.preview-content {
+  padding: 1.5rem;
+}
+
+.preview-domain {
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.preview-title {
+  font-size: 1.1rem;
+  margin: 0 0 0.5rem 0;
+  color: #333;
+}
+
+.preview-description {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.preview-loading {
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+  text-align: center;
+  color: #666;
+}
+
+.preview-error {
+  padding: 1.5rem;
+  background: #fff3f3;
+  border-radius: 12px;
+  color: #dc3545;
+  border: 1px solid #ffc9c9;
+}
