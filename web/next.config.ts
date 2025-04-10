@@ -16,4 +16,14 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = {
+  nextConfig,
+  images: {
+    domains: [
+      'linkpreview.net', // Add domains you expect images from
+      'example.com',     // Add other domains as needed
+      'via.placeholder.com'
+
+    ],
+  },
+};

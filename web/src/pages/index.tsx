@@ -3,12 +3,25 @@ import Navbar from "@/components/navbar";
 import LinkPreview from "@/components/LinkPreview";
 import "@/styles/globals.css";
 
+interface SearchResult {
+  platform: string;
+  username: string;
+  url: string;
+  source: "database" | "discovered";
+  confidence: number;
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
 const UNSPLASH_API_URL = "https://api.unsplash.com/photos/random";
 
 export default function Home() {
   const [link, setLink] = useState("");
   const [error, setError] = useState("");
   const [backgroundImage, setBackgroundImage] = useState("/default-bg.jpg");
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,6 +33,7 @@ export default function Home() {
   const clearInput = () => {
     setLink("");
     setError("");
+    setSearchResults([]);
   };
 
   const isValidUrl = (url: string) => {
@@ -31,10 +45,30 @@ export default function Home() {
     }
   };
 
+  const handleSearch = async () => {
+    if (!link.trim()) {
+      return;
+    }
+    setIsSearching(true);
+    setError("");
+
+    try {
+      const response = await fetch(`/api/search?url=${encodeURIComponent(link)}`);
+      if (!response.ok) throw new Error("Search failed");
+      const data = await response.json();
+      setSearchResults(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to search");
+      setSearchResults([]);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
   useEffect(() => {
     const fetchBackground = async () => {
       const accessKey = "5R_DESU0FUmqo_L5imHUDNpL7HuS31KhUVVEE1HkwFk";
-      
+
       if (!accessKey) {
         console.error("Unsplash access key is missing");
         setIsLoading(false);
@@ -52,7 +86,7 @@ export default function Home() {
         );
 
         if (!response.ok) throw new Error("Failed to fetch background");
-        
+
         const data = await response.json();
         if (data.urls?.regular) {
           setBackgroundImage(data.urls.regular);
@@ -72,8 +106,8 @@ export default function Home() {
     <div className="page-container">
       <Navbar />
       <main>
-        <section 
-          className="hero" 
+        <section
+          className="hero"
           style={{ backgroundImage: `url(${backgroundImage})` }}
         >
           <div className="hero-overlay">
@@ -93,15 +127,51 @@ export default function Home() {
               placeholder="https://example.com"
               aria-label="Enter URL for preview"
             />
-            <button 
-              onClick={clearInput}
-              aria-label="Clear input"
-            >
+            <button onClick={clearInput} aria-label="Clear input">
               Clear
+            </button>
+            <button
+              type="button"
+              onClick={handleSearch}
+              disabled={isSearching || !link.trim()}
+            >
+              {isSearching ? "Searching..." : "Search"}
             </button>
           </div>
           {error && <p className="error-message">{error}</p>}
         </section>
+
+        {searchResults.length > 0 && (
+          <section className="results-section">
+            <h2>Search Results:</h2>
+            <div className="results-grid">
+              {searchResults.map((result, index) => (
+                <div key={index} className={`result-card ${result.source}`}>
+                  <div className="result-header">
+                    <h3>{result.platform}</h3>
+                    <span className="confidence">
+                      Confidence: {(result.confidence * 100).toFixed(0)}%
+                    </span>
+                  </div>
+                  <a
+                    href={result.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="profile-link"
+                  >
+                    @{result.username}
+                  </a>
+                  {result.title && (
+                    <p className="result-title">{result.title}</p>
+                  )}
+                  {result.description && (
+                    <p className="result-description">{result.description}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         {!isLoading && link && !error && (
           <section className="preview-section">
