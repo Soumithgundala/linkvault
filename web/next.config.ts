@@ -12,18 +12,16 @@ const nextConfig = {
         hostname: 'example.com',
         pathname: '/images/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'linkpreview.net',
+      },
+      {
+        protocol: 'https',
+        hostname: 'via.placeholder.com',
+      }
     ],
   },
 };
 
-module.exports = {
-  nextConfig,
-  images: {
-    domains: [
-      'linkpreview.net', // Add domains you expect images from
-      'example.com',     // Add other domains as needed
-      'via.placeholder.com'
-
-    ],
-  },
-};
+module.exports = nextConfig; // Direct export - NO NESTING
