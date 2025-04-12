@@ -1,8 +1,0 @@
-{
-    "version": 1.1,
-    "atDirectives": [
-      { "name": "@tailwind", "description": "Tailwind directive for base, components, utilities." },
-      { "name": "@apply", "description": "Inline utility classes into custom CSS." }
-    ]
-  }
-  
