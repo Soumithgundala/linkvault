@@ -1,6 +1,6 @@
 // src/components/LinkPreview.tsx
 import { useState, useEffect } from 'react';
-
+import Image from 'next/image';
 
 interface PreviewData {
   title?: string;
@@ -43,12 +43,14 @@ export default function LinkPreview({ url }: { url: string }) {
     <a href={url} target="_blank" rel="noopener noreferrer" className="preview-card">
       {preview?.image && (
         <div className="preview-image-container">
-          <image></image>
-            src={preview.image} 
-            alt={preview.title || 'Preview image'} 
+          <Image
+            src={preview.image}
+            alt="Preview"
             className="preview-image"
+            width={320}
+            height={180}
             loading="lazy"
-          />          
+          />
         </div>
       )}
       <div className="preview-content">

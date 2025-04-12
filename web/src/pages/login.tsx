@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/navbar";
 import "@/styles/globals.css"; // Ensure this file contains the global styles
-import "@/styles/account.css"; // Ensure this file contains the styles
+import "@/styles/Profile.module.css"; // Ensure this file contains the styles
 
 // Define the profile data interface
 interface ProfileData {

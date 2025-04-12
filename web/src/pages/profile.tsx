@@ -1,11 +1,10 @@
 // src/pages/profile.tsx
 import { useState } from 'react';
-import { auth } from '@/firebase'; // Update with your auth path
-import { addUserProfile } from '@/lib/db'; // Update with your database functions
+import { auth } from '@/firebase';
+import { addUserProfile } from '@/lib/db'; 
 import Navbar from '@/components/navbar';
-import '@/styles/globals.css'; // Ensure this file contains the global styles
-import '@/styles/account.css'; // Ensure this file contains the styles
-
+import '@/styles/globals.css'; 
+import '@/styles/Profile.module.css'; 
 interface SocialProfile {
   platform: string;
   username: string;

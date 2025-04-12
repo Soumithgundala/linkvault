@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 
 function Navbar() {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -26,7 +27,13 @@ function Navbar() {
     <nav className="navbar">
       <div className="navbar-container">
         <div className="logo-container" onClick={() => window.location.href = "/"}>
-          <img src="/linkvault-logo.svg.png" alt="LinkVault Logo" className="logo" />
+        <Image
+          src="/linkvault-logo.svg.png" // Path to your logo image
+          alt="Linkvault Logo"
+          width={40} 
+          height={40}
+          className="your-class"
+        />
         </div>
         <h1 className="Title-Linkvault">LinkVault</h1>
         <div className="dropdown-button" onClick={handleDropdown}>
