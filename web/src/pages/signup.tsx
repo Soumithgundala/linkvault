@@ -5,7 +5,7 @@ import { auth, db } from "@/firebase"; // Firebase configuration
 import Link from "next/link";
 import Navbar from "@/components/navbar";
 // import "@/styles/globals.css"; // CSS for styling
-import "@/styles/Profile.module.css";
+// import "@/styles/accont.css";
 
 // Define an interface for Firebase errors
 interface FirebaseErrorType {
