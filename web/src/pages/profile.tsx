@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { auth } from '@/firebase';
 import { addUserProfile } from '@/lib/db'; 
 import Navbar from '@/components/navbar';
-import '@/styles/globals.css'; 
+// import '@/styles/globals.css'; 
 import '@/styles/Profile.module.css'; 
 interface SocialProfile {
   platform: string;

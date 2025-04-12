@@ -3,7 +3,7 @@ import LinkPreview from "@/components/LinkPreview";
 import Navbar from "@/components/navbar";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/firebase";
-import "@/styles/globals.css";
+// import "@/styles/globals.css";
 
 interface SocialProfile {
   platform: string;

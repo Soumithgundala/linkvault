@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Navbar from "@/components/navbar";
 import LinkPreview from "@/components/LinkPreview";
-import "@/styles/globals.css";
+// import "@/styles/globals.css";
 
 interface SearchResult {
   platform: string;
