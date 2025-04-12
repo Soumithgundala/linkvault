@@ -1,6 +1,7 @@
 // src/components/LinkPreview.tsx
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import e from 'express';
 
 interface PreviewData {
   title?: string;
@@ -38,18 +39,32 @@ export default function LinkPreview({ url }: { url: string }) {
   if (preview?.error) {
     return <div className="preview-error">{preview.error}</div>;
   }
+  const normalizeImageUrl = (url: string) => {
+    try {
+      const parsed = new URL(url);
+      // Force HTTPS for all external images
+      parsed.protocol = 'https:';
+      return parsed.toString();
+    } catch {
+      return url;
+    }
+  };
+  
 
   return (
     <a href={url} target="_blank" rel="noopener noreferrer" className="preview-card">
       {preview?.image && (
         <div className="preview-image-container">
           <Image
-            src={preview.image}
+            src={normalizeImageUrl(preview.image)}
             alt="Preview"
             className="preview-image"
             width={320}
             height={180}
             loading="lazy"
+            onError={(e) => {
+              e.currentTarget.src = '/default-image.png'; // Fallback image
+            }}
           />
         </div>
       )}
