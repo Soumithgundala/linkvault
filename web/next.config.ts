@@ -2,23 +2,42 @@
 const nextConfig = {
   images: {
     remotePatterns: [
-      // Instagram configuration
       {
         protocol: 'https',
         hostname: '**.instagram.com',
       },
       {
         protocol: 'https',
-        hostname: '*.fbcdn.net',
+        hostname: 'avatars.githubusercontent.com',
       },
-      // General fallback for any HTTPS image
       {
         protocol: 'https',
-        hostname: '**',
+        hostname: 'via.placeholder.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'linkpreview.net',
+      },
+      {
+        protocol: 'https',
+        hostname: 'scontent.cdninstagram.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.twing.com'
       }
     ],
-    // Security settings
-    dangerouslyAllowSVG: false,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    domains: [
+      'abs.twimg.com',
+      'instagram.com',
+      'static.xx.fbcdn.net',
+      'platform-lookaside.fbsbx.com',
+      'linkpreview.net',
+      'example.com',
+      'localhost'
+    ], // Add all needed domains
+    
   },
 };
+
+module.exports = nextConfig;

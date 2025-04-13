@@ -1,29 +1,70 @@
-// src/components/LinkPreview.tsx
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import e from 'express';
 
 interface PreviewData {
-  title?: string;
-  description?: string;
-  image?: string;
-  url?: string;
+  title: string;
+  description: string;
+  image: string;
+  url: string;
   error?: string;
 }
+
+const isValidUrl = (url: string): boolean => {
+  try {
+    new URL(url);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+const normalizeImageUrl = (url: string): string | null => {
+  try {
+    const parsed = new URL(url);
+    parsed.protocol = 'https:';
+    return parsed.toString();
+  } catch {
+    return null;
+  }
+};
 
 export default function LinkPreview({ url }: { url: string }) {
   const [preview, setPreview] = useState<PreviewData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!isValidUrl(url)) {
+      setError('Invalid URL');
+      setLoading(false);
+      return;
+    }
+
     const fetchPreview = async () => {
       try {
-        const response = await fetch(`/api/preview?url=${encodeURIComponent(url)}`);
-        if (!response.ok) throw new Error('Preview failed');
+        const encodedUrl = encodeURIComponent(url);
+        const response = await fetch(`/api/preview?url=${encodedUrl}`);
+        
+        if (!response.ok) {
+          throw new Error(`Request failed with status ${response.status}`);
+        }
+
         const data = await response.json();
-        setPreview(data);
-      } catch {
-        setPreview({ error: 'Failed to load preview' });
+        
+        if (data.error) {
+          throw new Error(data.error);
+        }
+
+        setPreview({
+          title: data.title,
+          description: data.description,
+          image: data.image,
+          url: data.url
+        });
+        setError(null);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to load preview');
+        setPreview(null);
       } finally {
         setLoading(false);
       }
@@ -33,50 +74,62 @@ export default function LinkPreview({ url }: { url: string }) {
   }, [url]);
 
   if (loading) {
-    return <div className="preview-loading">Loading preview...</div>;
+    return <div className="preview-loading p-4 text-gray-500">Loading preview...</div>;
   }
 
-  if (preview?.error) {
-    return <div className="preview-error">{preview.error}</div>;
+  if (error) {
+    return (
+      <div className="preview-error p-4 bg-red-50 text-red-600">
+        Error: {error}
+      </div>
+    );
   }
-  const normalizeImageUrl = (url: string) => {
-    try {
-      const parsed = new URL(url);
-      // Force HTTPS for all external images
-      parsed.protocol = 'https:';
-      return parsed.toString();
-    } catch {
-      return url;
-    }
-  };
-  
+
+  if (!preview) return null;
+
+  const safeImageUrl = preview.image ? normalizeImageUrl(preview.image) : null;
+  const parsedUrl = new URL(preview.url);
 
   return (
-    <a href={url} target="_blank" rel="noopener noreferrer" className="preview-card">
-      {preview?.image && (
-        <div className="preview-image-container">
+    <a
+      href={preview.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="preview-card block border rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
+    >
+      {safeImageUrl && (
+        <div className="preview-image-container relative h-48 bg-gray-100">
           <Image
-            src={normalizeImageUrl(preview.image)}
-            alt="Preview"
-            className="preview-image"
-            width={320}
-            height={180}
-            loading="lazy"
+            src={safeImageUrl}
+            alt={preview.title || 'Preview Image'}
+            layout="fill"
+            objectFit="cover"
+            className="preview-image rounded-t-lg"
             onError={(e) => {
-              e.currentTarget.src = '/default-image.png'; // Fallback image
+              const container = e.currentTarget.parentElement;
+              if (container) {
+                container.style.display='none';
+              }
             }}
+            unoptimized={process.env.NODE_ENV!=='production'}
           />
+
         </div>
       )}
-      <div className="preview-content">
-        {preview?.url && (
-          <div className="preview-domain">
-            {new URL(preview.url).hostname}
-          </div>
+      
+      <div className="preview-content p-4">
+        <div className="preview-domain text-sm text-gray-500 mb-1">
+          {parsedUrl.hostname}
+        </div>
+        {preview.title && (
+          <h3 className="preview-title font-semibold mb-2 truncate">
+            {preview.title}
+          </h3>
         )}
-        {preview?.title && <h3 className="preview-title">{preview.title}</h3>}
-        {preview?.description && (
-          <p className="preview-description">{preview.description}</p>
+        {preview.description && (
+          <p className="preview-description text-sm text-gray-600 line-clamp-2">
+            {preview.description}
+          </p>
         )}
       </div>
     </a>
