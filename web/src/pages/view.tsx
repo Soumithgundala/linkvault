@@ -73,7 +73,7 @@ export default function View() {
         <div className="profiles-grid">
           {profiles.map((profile) => (
             <div key={profile.id} className="profile-card">
-              <h2 className="profile-username">{profile.username}</h2>
+              {/* <h2 className="profile-username">{profile.username}</h2> */}
               {profile.socialProfiles?.length ? (
                 profile.socialProfiles.map((social, index) => (
                   <div key={index} className="social-profile">
