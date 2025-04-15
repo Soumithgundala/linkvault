@@ -218,6 +218,7 @@ button:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap:1rem;
 }
 
 .logo-container {
@@ -537,4 +538,65 @@ button:hover {
   .preview-image {
     transition: none;
   }
+}
+
+/* View link styles */
+.view-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #3b82f6; /* Button blue */
+  color: white;
+  padding: 0.5rem 1.2rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 150ms ease-in-out;
+  margin-left: 59rem; /* Space from title */
+  border: 2px solid #2563eb; /* Darker border */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.view-link:hover {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.view-link:active {
+  transform: translateY(0);
+}
+
+.view-icon {
+  width: 1.4rem;
+  height: 1.4rem;
+  stroke: white;
+}
+
+/* Title spacing */
+.Title-Linkvault {
+  margin-right: auto; /* Pushes subsequent elements to right */
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .view-link {
+    padding: 0.5rem 1rem;
+    margin-left: 0.5rem;
+  }
+  
+  .view-link span:last-child { /* Hide "View" text on mobile */
+    display: none;
+  }
+  
+  .view-icon {
+    width: 1.6rem;
+    height: 1.6rem;
+    margin-right: -0.3rem;
+  }
+}
+
+/* Dropdown button positioning */
+.dropdown-button {
+  margin-left: auto; /* Pushes dropdown to far right */
 }
