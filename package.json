@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/cheerio": "^0.22.35",
+    "axios": "^1.8.4",
+    "cheerio": "^1.0.0",
     "lucide-react": "^0.487.0",
     "next": "15.2.4",
     "react": "^19.0.0",
