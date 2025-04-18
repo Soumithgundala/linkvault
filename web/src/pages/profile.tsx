@@ -1,29 +1,29 @@
 // src/pages/profile.tsx
 import { useState } from 'react';
 import { auth } from '@/firebase';
-import { GithubAuthProvider, signInWithPopup } from 'firebase/auth';
+// import { GithubAuthProvider, signInWithPopup } from 'firebase/auth';
 import Navbar from '@/components/navbar';
-import GitHubStats from '@/components/GitHubHeatmap';
-import LeetCodeStats from '@/components/LeetCodeStats';
+// import GitHubStats from '@/components/GitHubHeatmap';
+// import LeetCodeStats from '@/components/LeetCodeStats';
 
 interface SocialProfile {
   platform: string;
   username: string;
 }
 
-interface CodingProfile {
-  githubUsername: string;
-  leetcodeUsername: string;
-  githubData?: {
-    commits: number;
-    stars: number;
-    repos: string[];
-  };
-  leetcodeData?: {
-    solved: number;
-    streak: number;
-  };
-}
+// interface CodingProfile {
+//   githubUsername: string;
+//   leetcodeUsername: string;
+//   githubData?: {
+//     commits: number;
+//     stars: number;
+//     repos: string[];
+//   };
+//   leetcodeData?: {
+//     solved: number;
+//     streak: number;
+//   };
+// }
 
 const socialPlatforms = [
   { name: 'Instagram', baseUrl: 'instagram.com', icon: '📸', placeholder: 'your_username' },
@@ -34,6 +34,7 @@ const socialPlatforms = [
   { name: 'YouTube', baseUrl: 'youtube.com/@', icon: '📺', placeholder: 'yourchannel' },
   { name: 'TikTok', baseUrl: 'tiktok.com/@', icon: '🎵', placeholder: 'yourusername' },
   { name: 'Snapchat', baseUrl: 'snapchat.com/add', icon: '👻', placeholder: 'yourusername' },
+  { name: 'leetcode', baseUrl: 'leetcode.com', icon: '💻', placeholder: 'yourusername' },
 ];
 
 export default function ProfileManager() {
@@ -42,45 +43,45 @@ export default function ProfileManager() {
   const [username, setUsername] = useState('');
   const [profiles, setProfiles] = useState<SocialProfile[]>([]);
   
-  // Coding profiles state
-  const [codingProfile, setCodingProfile] = useState<CodingProfile>({
-    githubUsername: '',
-    leetcodeUsername: ''
-  });
+  // // Coding profiles state
+  // const [codingProfile, setCodingProfile] = useState<CodingProfile>({
+  //   githubUsername: '',
+  //   leetcodeUsername: ''
+  // });
   
   // Common state
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // GitHub OAuth integration
-  const connectGitHub = async () => {
-    try {
-      const provider = new GithubAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
+  // // GitHub OAuth integration
+  // const connectGitHub = async () => {
+  //   try {
+  //     const provider = new GithubAuthProvider();
+  //     const result = await signInWithPopup(auth, provider);
+  //     const user = result.user;
       
-      setCodingProfile(prev => ({
-        ...prev,
-        githubUsername: user.providerData[0]?.uid || ''
-      }));
-    } catch {
-      setError('Failed to connect GitHub account');
-    }
-  };
+  //     setCodingProfile(prev => ({
+  //       ...prev,
+  //       githubUsername: user.providerData[0]?.uid || ''
+  //     }));
+  //   } catch {
+  //     setError('Failed to connect GitHub account');
+  //   }
+  // };
 
-  // Fetch LeetCode stats
-  const fetchLeetCodeStats = async () => {
-    try {
-      const response = await fetch(`/api/leetcode?username=${codingProfile.leetcodeUsername}`);
-      const data = await response.json();
-      setCodingProfile(prev => ({
-        ...prev,
-        leetcodeData: data.stats
-      }));
-    } catch {
-      setError('Failed to load LeetCode stats');
-    }
-  };
+  // // Fetch LeetCode stats
+  // const fetchLeetCodeStats = async () => {
+  //   try {
+  //     const response = await fetch(`/api/leetcode?username=${codingProfile.leetcodeUsername}`);
+  //     const data = await response.json();
+  //     setCodingProfile(prev => ({
+  //       ...prev,
+  //       leetcodeData: data.stats
+  //     }));
+  //   } catch {
+  //     setError('Failed to load LeetCode stats');
+  //   }
+  // };
 
   // Save all profiles
   const handleSubmit = async (e: React.FormEvent) => {
@@ -201,58 +202,17 @@ export default function ProfileManager() {
             )}
           </div>
         </div>
-
-        {/* Coding Profiles Section */}
-        <div className="coding-section">
-          <h2>Coding Profiles</h2>
-          
-          <div className="platform-card">
-            <h3>GitHub Integration</h3>
-            {codingProfile.githubUsername ? (
-              <>
-                <GitHubStats username={codingProfile.githubUsername} />
-                <button onClick={connectGitHub} className="refresh-button">
-                  Refresh GitHub Data
-                </button>
-              </>
-            ) : (
-              <button onClick={connectGitHub} className="connect-button">
-                Connect GitHub
-              </button>
-            )}
-          </div>
-
-          <div className="platform-card">
-            <h3>LeetCode Stats</h3>
-            <div className="input-group">
-              <input
-                type="text"
-                value={codingProfile.leetcodeUsername}
-                onChange={(e) => setCodingProfile(prev => ({
-                  ...prev,
-                  leetcodeUsername: e.target.value
-                }))}
-                placeholder="Enter LeetCode username"
-              />
-              <button onClick={fetchLeetCodeStats} className="fetch-button">
-                Load Stats
-              </button>
-            </div>
-            {codingProfile.leetcodeData && (
-              <LeetCodeStats data={codingProfile.leetcodeData} />
-            )}
-          </div>
         </div>
-
-        <button 
-          type="submit" 
-          onClick={handleSubmit}
-          disabled={loading}
-          className="save-button"
-        >
+        <div className="save-button-container">
+          <button 
+            type="submit" 
+            onClick={handleSubmit}
+            disabled={loading}
+            className="save-button"
+          >
           {loading ? 'Saving...' : 'Save All Profiles'}
         </button>
-      </div>
+        </div>
     </>
   );
 }
