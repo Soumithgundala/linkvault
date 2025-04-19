@@ -3,7 +3,6 @@ import LinkPreview from "@/components/LinkPreview";
 import Navbar from "@/components/navbar";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/firebase";
-// import "@/styles/globals.css";
 
 interface SocialProfile {
   platform: string;
@@ -27,19 +26,19 @@ export default function View() {
         const usersRef = collection(db, "users");
         const querySnapshot = await getDocs(usersRef);
         const profilesData: ProfileData[] = [];
-        
+
         querySnapshot.forEach((doc) => {
           const data = doc.data();
           console.log("Firestore data:", data); // Add this for debugging
-          
+
           profilesData.push({
             id: doc.id,
             username: data.username || "Unknown",
             socialProfiles: data.socialProfiles || [],
-            updatedAt: data.updatedAt?.toDate() || null
+            updatedAt: data.updatedAt?.toDate() || null,
           });
         });
-        
+
         setProfiles(profilesData);
       } catch (err) {
         setError("Failed to fetch profiles.");
@@ -52,18 +51,29 @@ export default function View() {
 
   // Utility function to create profile URLs
   const getProfileUrl = (platform: string, username: string) => {
-    switch(platform.toLowerCase()) {
-      case 'instagram':
+    switch (platform.toLowerCase()) {
+      case "instagram":
         return `https://instagram.com/${username}`;
-      case 'twitter':
+      case "twitter":
         return `https://twitter.com/${username}`;
-      case 'github':
+      case "github":
         return `https://github.com/${username}`;
+      case "linkedin":
+        return `https://linkedin.com/in/${username}`;
+      case "facebook":
+        return `https://facebook.com/${username}`;
+      case "tiktok":
+        return `https://tiktok.com/@${username}`;
+      case "youtube":
+        return `https://youtube.com/${username}`;
+      case "snapchat":
+        return `https://snapchat.com/add/${username}`;
+      case "leetcode":
+        return `https://leetcode.com/${username}`;
       default:
-        return '';
+        return "";
     }
   };
-
   return (
     <>
       <Navbar />
@@ -71,25 +81,24 @@ export default function View() {
         <h1 className="view-title">All Profiles</h1>
         {error && <p className="error-message">{error}</p>}
         <div className="profiles-grid">
-          {profiles.map((profile) => (
-            <div key={profile.id} className="profile-card">
-              {/* <h2 className="profile-username">{profile.username}</h2> */}
-              {profile.socialProfiles?.length ? (
-                profile.socialProfiles.map((social, index) => (
-                  <div key={index} className="social-profile">
+          {profiles
+            .filter(profile => profile.socialProfiles?.length) // Only show profiles with socials
+            .map((profile) => (
+              <div key={profile.id} className="profile-card">
+                {profile.socialProfiles?.map((social, index) => (
+                  <div key={`${profile.id}-${social.platform}-${index}`} className="social-profile">
                     <h3>{social.platform}</h3>
                     <div className="link-preview-container">
                       <LinkPreview url={getProfileUrl(social.platform, social.username)} />
                     </div>
                   </div>
-                ))
-              ) : (
-                <p>No social profiles available</p>
-              )}
-            </div>
-          ))}
+                ))}
+              </div>
+            ))}
         </div>
       </div>
     </>
   );
+
+
 }
