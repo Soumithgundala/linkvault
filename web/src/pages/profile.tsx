@@ -1,10 +1,11 @@
 // src/pages/profile.tsx
 import { useState } from 'react';
-import { auth } from '@/firebase';
+import { auth, db } from '@/firebase';
 // import { GithubAuthProvider, signInWithPopup } from 'firebase/auth';
 import Navbar from '@/components/navbar';
 // import GitHubStats from '@/components/GitHubHeatmap';
 // import LeetCodeStats from '@/components/LeetCodeStats';
+import { collection, doc, setDoc, serverTimestamp } from "firebase/firestore";
 
 interface SocialProfile {
   platform: string;
@@ -88,20 +89,21 @@ export default function ProfileManager() {
     e.preventDefault();
     setLoading(true);
     setError('');
-
+  
     try {
       const user = auth.currentUser;
       if (!user) throw new Error('User not authenticated');
-
-      // Save both social and coding profiles
-      // const fullProfile = {
-      //   social: profiles,
-      //   coding: codingProfile
-      // };
+  
+      // Create a user document reference
+      const userRef = doc(collection(db, "users"), user.uid);
       
-      // Here you would call your actual save function
-      // await addUserProfile(user.uid, fullProfile);
-      
+      // Set the document data
+      await setDoc(userRef, {
+        username: user.displayName || "Anonymous",
+        socialProfiles: profiles,
+        updatedAt: serverTimestamp()
+      });
+  
       alert('Profiles saved successfully!');
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Failed to save profiles');
@@ -109,6 +111,7 @@ export default function ProfileManager() {
       setLoading(false);
     }
   };
+  
 
   return (
     <>

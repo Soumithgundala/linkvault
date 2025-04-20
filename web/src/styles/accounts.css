@@ -3,11 +3,11 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-image: linear-gradient(to bottom, #f7f7f7, #fff);
+  background-image: linear-gradient(to bottom, #1b1a1a, #1e1c1c);
 }
 
 .login-card {
-  background-color: #fff;
+  background-color: #121111;
   padding: 2rem;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -15,7 +15,7 @@
 }
 
 .signup-background {
-  background-image: linear-gradient(to bottom, #f7f7f7, #fff);
+  background-image: linear-gradient(to bottom, #1b1a1a, #1e1c1c);
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -23,7 +23,7 @@
 }
 
 .signup-card {
-  background-color: #fff;
+  background-color: #232323;
   padding: 2rem;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -45,6 +45,8 @@
 .signup-form {
   display: flex;
   flex-direction: column;
+  gap: 1rem;
+  width: 100%;
 }
 
 .login-input,
@@ -54,17 +56,45 @@
   border: none;
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  width:100%;
 }
 
 .login-button,
 .signup-button {
-  background-color: #333;
+  background-color: #08145f;
+  justify-content: center;
   color: white;
   padding: 0.5rem;
+  margin: auto;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+.signup-link {
+  text-align: center;
+  display: block;
+  margin: 5rem;
+}
+.signin-link {
+  text-align: center;
+  display: block;
+  margin: 10rem;
+}
+.password-container{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.toggle-password-button {
+  cursor: pointer;
+  left: auto;
+  top: 36.5%;
+  justify-content: baseline;
 }
 
 .login-button:hover,
