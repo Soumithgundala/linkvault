@@ -37,6 +37,7 @@
       typeof (error as FirebaseErrorType).message === "string"
     );
   }
+  
 
   // // Navbar Component
   // function Navbar() {
@@ -112,7 +113,6 @@
       });
       setProfile(userData);
     };
-
     return (
       <>
         <Navbar />
@@ -183,7 +183,7 @@
                     Search Profile
                   </button>
                 </div>
-                {profile && (
+                {/* {profile && (
                   <div className="profile-card">
                     <h2 className="profile-title">{profile.username}</h2>
                     <p>
@@ -209,7 +209,7 @@
                       </a>
                     </p>
                   </div>
-                )}
+                )} */}
               </>
             )}
           </div>
