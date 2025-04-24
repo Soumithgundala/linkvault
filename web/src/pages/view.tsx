@@ -88,7 +88,7 @@ export default function View() {
     <>
       <Navbar />
       <div className="view-page">
-        <h1 className="view-title">Your Social Profiles</h1>
+        <h1 className="view-title">{profile?.username||"Your Profile"}</h1>
         {error && <p className="error-message">{error}</p>}
         
         {loading ? (

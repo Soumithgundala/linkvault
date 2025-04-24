@@ -62,7 +62,7 @@
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
-    // const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [profile, setProfile] = useState<ProfileData | null>(null);
@@ -184,7 +184,7 @@
                     Search Profile
                   </button>
                 </div>
-                {/* {profile && (
+                {profile && (
                   <div className="profile-card">
                     <h2 className="profile-title">{profile.username}</h2>
                     <p>
@@ -210,7 +210,7 @@
                       </a>
                     </p>
                   </div>
-                )} */}
+                )}
               </>
             )}
           </div>
