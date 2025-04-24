@@ -62,7 +62,7 @@
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    // const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [profile, setProfile] = useState<ProfileData | null>(null);
@@ -106,6 +106,7 @@
       querySnapshot.forEach((doc) => {
         const data = doc.data();
         userData = {
+
           id: doc.id,
           username: data.username,
           socialLinks: data.socialLinks,
