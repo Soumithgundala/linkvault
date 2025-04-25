@@ -213,7 +213,8 @@ button:hover {
 }
 
 .navbar-container {
-  max-width: 1200px;
+  width: 100%;
+  padding: 0 1rem;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -247,6 +248,12 @@ button:hover {
   justify-content: space-between;
   align-items: center;
 }
+.nav-right{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  order: 2;
+}
 
 .logo-container {
   cursor: pointer;
@@ -261,7 +268,7 @@ button:hover {
 /* Example if you're using global CSS */
 .dropdown {
   position: absolute;
-  right: 1rem;
+  /* right: 10rem; */
   top: 4rem;
   background-color: white;
   border: 1px solid #ccc;
@@ -271,14 +278,15 @@ button:hover {
 }
 
 .dropdown-button {
-  position: absolute;
-  right: calc(0.9rem + 2cm); /* Move the button 2 cm to the left */
-  top: 5%; /* Center it vertically relative to the navbar */
-  transform: translateY(-50%); /* Adjust for vertical centering */
+  /* position: absolute; */
+  /* right: calc(0.9rem + 2cm); 
+  top: 5%;
+  transform: translateY(-50%); */
   cursor: pointer;
   display: flex;
-  justify-content: center; /* Center the icon horizontally */
-  align-items: center; /* Center the icon vertically */
+  justify-content: center; 
+  align-items: center; 
+  order:2;
   z-index:100;
 }
 
@@ -554,9 +562,10 @@ button:hover {
   text-decoration: none;
   font-weight: 5000;
   transition: all 150ms ease-in-out;
-  margin-left: 50rem; /* Space from title */
+  /* margin-left: 50rem; */
   border: 4px solid #2563eb; /* Darker border */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  order:1;
 }
 
 .view-link:hover {
@@ -580,24 +589,23 @@ button:hover {
   margin-right: auto; /* Pushes subsequent elements to right */
 }
 
-/* Mobile responsiveness */
 @media (max-width: 768px) {
-  .view-link {
-    padding: 0.5rem 1rem;
-    margin-left: 0.5rem;
-  }
-  
-  .view-link span:last-child { /* Hide "View" text on mobile */
+  .Title-Linkvault {
     display: none;
   }
-  
-  .view-icon {
-    width: 1.6rem;
-    height: 1.6rem;
-    margin-right: -0.3rem;
+
+  .view-link span {
+    display: none;
+  }
+
+  .nav-right {
+    gap: 0.5rem;
+  }
+
+  .view-link {
+    padding: 0.5rem;
   }
 }
-
 /* Dropdown button positioning */
 .dropdown-button {
   margin-left: auto; /* Pushes dropdown to far right */
