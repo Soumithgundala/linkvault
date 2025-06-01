@@ -1,22 +1,13 @@
 // src/pages/profile.tsx
-import { useState, useEffect } from 'react'; // Added useEffect in case you need it later
+import { useState, useEffect } from 'react';
 import { auth, db } from '@/firebase';
-// import { GithubAuthProvider, signInWithPopup } from 'firebase/auth'; // Uncomment if you use GitHub sign-in
 import Navbar from '@/components/navbar';
-// import GitHubStats from '@/components/GitHubHeatmap'; // Uncomment if you use these components
-// import LeetCodeStats from '@/components/LeetCodeStats'; // Uncomment if you use these components
-import { collection, doc, setDoc, serverTimestamp, getDoc } from "firebase/firestore"; // Added getDoc
+import { collection, doc, setDoc, serverTimestamp, getDoc } from "firebase/firestore";
 
 interface SocialProfile {
   platform: string;
   username: string;
 }
-
-// interface CodingProfile { // Uncomment if you implement coding profiles
-//   githubUsername: string;
-//   leetcodeUsername: string;
-//   // ... other fields
-// }
 
 const socialPlatforms = [
   { name: 'Instagram', baseUrl: 'instagram.com', icon: '📸', placeholder: 'your_username' },
@@ -24,7 +15,7 @@ const socialPlatforms = [
   { name: 'LinkedIn', baseUrl: 'linkedin.com/in', icon: '💼', placeholder: 'your-profile' },
   { name: 'GitHub', baseUrl: 'github.com', icon: '🐙', placeholder: 'yourusername' },
   { name: 'Facebook', baseUrl: 'facebook.com', icon: '📘', placeholder: 'your.profile' },
-  { name: 'YouTube', baseUrl: 'youtube.com/c', icon: '📺', placeholder: 'YourChannelNameOrID' }, // Updated YouTube base URL
+  { name: 'YouTube', baseUrl: 'youtube.com/c', icon: '📺', placeholder: 'YourChannelNameOrID' },
   { name: 'TikTok', baseUrl: 'tiktok.com/@', icon: '🎵', placeholder: 'yourusername' },
   { name: 'Snapchat', baseUrl: 'snapchat.com/add', icon: '👻', placeholder: 'yourusername' },
   { name: 'LeetCode', baseUrl: 'leetcode.com', icon: '💻', placeholder: 'yourusername' },
@@ -34,58 +25,60 @@ export default function ProfileManager() {
   const [selectedPlatform, setSelectedPlatform] = useState('');
   const [username, setUsername] = useState('');
   const [profiles, setProfiles] = useState<SocialProfile[]>([]);
-  
-  // --- DEBUG LOG 1: Log profiles on every render ---
+  const [currentUserDisplayName, setCurrentUserDisplayName] = useState<string | null>(null); // State for user's name
+
   console.log('[ProfileManager RENDER] Current profiles:', JSON.stringify(profiles));
+  console.log('[ProfileManager RENDER] Current user display name:', currentUserDisplayName);
+
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Fetch existing profiles when the component mounts and user is available
   useEffect(() => {
-    const fetchUserProfile = async () => {
-      if (auth.currentUser) {
-        setLoading(true);
-        try {
-          const userRef = doc(db, "users", auth.currentUser.uid);
-          const docSnap = await getDoc(userRef);
-          if (docSnap.exists()) {
-            const userData = docSnap.data();
-            console.log('[useEffect] Fetched user data:', JSON.stringify(userData));
-            if (userData.socialProfiles && Array.isArray(userData.socialProfiles)) {
-              setProfiles(userData.socialProfiles);
-              console.log('[useEffect] Profiles set from Firestore:', JSON.stringify(userData.socialProfiles));
-            }
-          } else {
-            console.log("[useEffect] No such document in Firestore for user. Starting with empty profiles.");
-            setProfiles([]); // Ensure profiles are empty if no document exists
+    const fetchUserProfileData = async (userId: string) => {
+      setLoading(true);
+      try {
+        const userRef = doc(db, "users", userId);
+        const docSnap = await getDoc(userRef);
+        if (docSnap.exists()) {
+          const userData = docSnap.data();
+          console.log('[useEffect] Fetched user data:', JSON.stringify(userData));
+          if (userData.socialProfiles && Array.isArray(userData.socialProfiles)) {
+            setProfiles(userData.socialProfiles);
+            console.log('[useEffect] Profiles set from Firestore:', JSON.stringify(userData.socialProfiles));
           }
-        } catch (err) {
-          console.error("[useEffect] Error fetching user profile from Firestore:", err);
-          setError("Failed to load existing profiles.");
-          setProfiles([]); // Ensure profiles are empty on error
+        } else {
+          console.log("[useEffect] No such document in Firestore for user. Starting with empty profiles.");
+          setProfiles([]);
         }
-        setLoading(false);
+      } catch (err) {
+        console.error("[useEffect] Error fetching user profile from Firestore:", err);
+        setError("Failed to load existing profiles.");
+        setProfiles([]);
       }
+      setLoading(false);
     };
 
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (user) {
-        console.log("[useEffect] User is signed in, attempting to fetch profile.");
-        fetchUserProfile();
+        console.log("[useEffect] User is signed in:", user.uid);
+        // Set display name
+        setCurrentUserDisplayName(user.displayName || user.email || "User"); // Fallback to email or generic "User"
+        fetchUserProfileData(user.uid);
       } else {
-        console.log("[useEffect] User is signed out, clearing profiles.");
-        setProfiles([]); // Clear profiles if user signs out
+        console.log("[useEffect] User is signed out.");
+        setProfiles([]);
         setSelectedPlatform('');
         setUsername('');
         setError('');
+        setCurrentUserDisplayName(null); // Clear display name on logout
       }
     });
 
-    return () => unsubscribe(); // Cleanup subscription on unmount
-  }, []); // Empty dependency array: runs once on mount and cleanup on unmount after auth state is checked
+    return () => unsubscribe();
+  }, []);
 
-  const handleSubmit = async (e?: React.FormEvent) => { // Made event optional
+  const handleSubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault(); 
     setLoading(true);
     setError('');
@@ -102,10 +95,10 @@ export default function ProfileManager() {
       
       console.log('[handleSubmit] Saving profiles to Firestore:', JSON.stringify(profiles));
       await setDoc(userRef, {
-        userDisplayName: user.displayName || user.email || "Anonymous",
-        socialProfiles: profiles, // Save the current 'profiles' state
+        userDisplayName: user.displayName || user.email || "Anonymous", // This is already good
+        socialProfiles: profiles,
         updatedAt: serverTimestamp()
-      }, { merge: true }); // Use merge: true to update existing doc or create if not exists
+      }, { merge: true }); 
   
       alert('Profiles saved successfully!');
     } catch (error) {
@@ -133,14 +126,13 @@ export default function ProfileManager() {
     console.log('[handleAddProfile] Profiles BEFORE adding:', JSON.stringify(profiles));
 
     setProfiles(prevProfiles => {
-      // Check if profile already exists to prevent duplicates (optional, but good practice)
       const profileExists = prevProfiles.some(
         p => p.platform === newProfile.platform && p.username === newProfile.username
       );
       if (profileExists) {
         setError(`Profile for ${newProfile.platform} with username ${newProfile.username} already exists.`);
         console.log('[handleAddProfile] Profile already exists. Not adding.');
-        return prevProfiles; // Return previous state if duplicate
+        return prevProfiles;
       }
 
       const updatedProfiles = [...prevProfiles, newProfile];
@@ -158,8 +150,15 @@ export default function ProfileManager() {
       <Navbar />
       <div className="profile-container">
         <h1>Manage Your Public Profiles</h1>
+        
+        {/* Display Current User's Name */}
+        {currentUserDisplayName && (
+          <p className="user-greeting" style={{ textAlign: 'center', margin: '0.5rem 0 1.5rem', fontSize: '1.1rem' }}>
+            Welcome, {currentUserDisplayName}!
+          </p>
+        )}
 
-        {auth.currentUser ? (
+        {auth.currentUser ? ( // You can also use currentUserDisplayName to gate this section
           <>
             <div className="social-section">
               <h2>Add Social Profiles</h2>
@@ -248,8 +247,8 @@ export default function ProfileManager() {
             <div className="save-button-container">
               <button 
                 type="button" 
-                onClick={() => handleSubmit()} // Call directly
-                disabled={loading || profiles.length === 0} // Disable if no profiles to save
+                onClick={() => handleSubmit()}
+                disabled={loading || profiles.length === 0}
                 className="save-button"
               >
               {loading ? 'Saving...' : 'Save All Profiles to LinkVault'}
@@ -257,7 +256,9 @@ export default function ProfileManager() {
             </div>
           </>
         ) : (
-          <p>Please sign in to manage your profiles.</p>
+          <p style={{ textAlign: 'center', marginTop: '2rem' }}>
+            Please sign in to manage your profiles.
+          </p>
         )}
       </div>
     </>
