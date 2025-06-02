@@ -554,10 +554,6 @@ button:hover {
 }
 
 @media (max-width: 768px) {
-  /* .Title-Linkvault {
-    /* display: none; */
-  } */
-
   .view-link span {
     display: none;
   }
@@ -569,3 +565,4 @@ button:hover {
   .view-link {
     padding: 0.5rem;
   }
+}
