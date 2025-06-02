@@ -554,9 +554,9 @@ button:hover {
 }
 
 @media (max-width: 768px) {
-  .Title-Linkvault {
-    display: none;
-  }
+  /* .Title-Linkvault {
+    /* display: none; */
+  } */
 
   .view-link span {
     display: none;
