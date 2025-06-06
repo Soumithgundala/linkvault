@@ -57,7 +57,7 @@ export default function ProfileManager() {
 
   // Fetches and migrates user data on login
   useEffect(() => {
-    const fetchUserProfileData = async (userId: string, user: any) => {
+    const fetchUserProfileData = async (userId: string, user: import("firebase/auth").User) => {
       setLoading(true);
       setError(null);
       try {
@@ -70,7 +70,7 @@ export default function ProfileManager() {
 
           if (dataToProcess && Array.isArray(dataToProcess)) {
             // FIX FOR BLANK PREVIEWS: Convert old data to the new unified format
-            const migratedLinks = dataToProcess.map((item: any) => {
+            const migratedLinks = dataToProcess.map((item: Partial<LinkItem> & { platform?: string; username?: string }) => {
               // If it's the OLD format (has 'platform' but not 'title')
               if (item.platform && item.username && !item.title) {
                 const platformInfo = socialPlatforms.find(p => p.name === item.platform);
@@ -84,7 +84,7 @@ export default function ProfileManager() {
               }
               // If it's already new format, just ensure it has an ID for React's key prop
               if (!item.id) item.id = uuidv4();
-              return item;
+              return item as LinkItem;
             });
             setLinks(migratedLinks as LinkItem[]);
           }
@@ -129,7 +129,7 @@ export default function ProfileManager() {
       setCurrentUserDisplayName(editableDisplayName.trim());
       setIsEditingName(false);
       alert("Display name updated!");
-    } catch (error) { 
+    } catch { 
       setError("Failed to update display name."); 
     } finally { 
       setIsUpdatingName(false); 
