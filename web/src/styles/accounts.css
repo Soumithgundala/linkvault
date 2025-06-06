@@ -144,10 +144,10 @@
 }
 
 .input-group {
-  display: grid;
+  display:grid;
   grid-template-columns: 1fr 2fr auto;
-  gap: 1rem;
-  align-items: center;
+ gap: 1rem;
+ align-items: center;
 }
 
 .platform-select, .username-input {
@@ -304,11 +304,11 @@
   background: #4338ca;
 }
 .save-button-container {
-  display: flex;
-  justify-content: left; /* Centers child horizontally */
-  align-items: left; /* Centers child vertically */
-  width: 10000%; /* Take full parent width */
-  margin-top: 2rem;
+  display: flex !important;
+  justify-content: center !important; /* Centers child horizontally */
+  width: 100% !important; /* Take full parent width */
+  margin-top: 1rem; /* Add margin for spacing */
+  padding: 1rem 0 2rem 0; /* Add padding for spacing */
 }
 
 .save-button {
@@ -321,10 +321,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  /* Remove width/margin constraints */
 }
-
-
 
 .save-button:disabled {
   background: #94a3b8;
@@ -353,26 +350,41 @@
   }
 }
 
-/* Responsive Design */
+/* In accounts.css, inside the @media (max-width: 768px) block */
 @media (max-width: 768px) {
   .input-group {
-    grid-template-columns: 1fr;
+    display: flex;          /* Switch to flexbox for mobile */
+    flex-direction: column; /* Stack items vertically */
+    gap: 1rem;              /* Maintain the gap between items */
   }
 
+  .input-group > .platform-select, /* Target direct children */
+  .input-group > .username-input {
+    width: 100%; /* Make select and input take full width */
+  }
+
+  .input-group > .add-button {
+    width: auto;           /* Let the button size to its content (not full width) */
+    align-self: center;    /* Center the button */
+    padding: 0.75rem 2rem; /* Ensure it has a good tap size */
+    margin-top: 0.5rem;    /* Optional: Add a little extra space above the button */
+  }
+
+  /* ... other mobile styles from your file ... */
   .profile-container {
     padding: 0 1rem;
   }
 
   h1 {
-    font-size: 2rem;
+    font-size: 1.8rem; /* Slightly adjusted for mobile if needed */
   }
 
   h2 {
-    font-size: 1.5rem;
+    font-size: 1.4rem; /* Slightly adjusted for mobile if needed */
   }
 
-  .social-section, .coding-section {
-    padding: 1.5rem;
+  .social-section, .coding-section { /* Assuming .coding-section exists */
+    padding: 1rem; /* Reduced padding for sections on mobile */
   }
 }
 
@@ -386,4 +398,38 @@
   .remove-button {
     align-self: flex-end;
   }
+}
+/* --- CSS for the Scrollable Profiles Section --- */
+.profiles-list-container {
+  width: 100%;
+  max-width: 700px; /* Or whatever width your .social-section has */
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.2); /* A subtle background to frame the list */
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.profiles-list-container h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 1rem;
+}
+
+.profiles-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 40vh; /* KEY: Set a maximum height (e.g., 40% of the viewport height) */
+  overflow-y: auto;  /* KEY: Add a vertical scrollbar ONLY when content overflows */
+  padding: 5px; /* A little space inside the scrollable area */
+}
+
+/* --- Ensure Save Button CSS is Correct --- */
+.save-button-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 1rem 0 2rem 0; /* Space above and below the button */
 }
