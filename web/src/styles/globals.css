@@ -357,7 +357,7 @@ button:hover {
   text-align: center;
   margin-top: 2rem;
   margin-bottom: 2rem;
-  color: var(--text-primary);
+  color: #b2c2e2;
   font-size: 2rem;
   font-weight: 700;
 }

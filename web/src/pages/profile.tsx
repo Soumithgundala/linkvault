@@ -71,13 +71,14 @@ export default function ProfileManager() {
           if (Array.isArray(dataToProcess)) {
             // FIX FOR BLANK PREVIEWS: Convert old data to the new unified format
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const sanitizedLinks = dataToProcess.map((item: any) => {
+            const cleanLinks = dataToProcess.map((item: any) => {
               // If it's the OLD format (has 'platform' but not 'title')
               if( !item || typeof item !='object'){
                 return null;
               }
-              if (item.platform && item.username && !item.title) {
+              if (item.platform && item.username) {
                 const platformInfo = socialPlatforms.find(p => p.name === item.platform);
+                if (!platformInfo) return null;
                 return {
                   id: uuidv4(),
                   url: platformInfo ? `${platformInfo.baseUrl}/${item.username}` : '#',
@@ -99,7 +100,7 @@ export default function ProfileManager() {
               }
               return null;
             }).filter(Boolean); // Remove any null entries
-            setLinks(sanitizedLinks as LinkItem[]);
+            setLinks(cleanLinks as LinkItem[]);
           }
         }
       } catch (err) {

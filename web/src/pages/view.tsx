@@ -3,9 +3,9 @@ import { useState, useEffect } from "react";
 import Navbar from "@/components/navbar";
 import { doc, onSnapshot } from "firebase/firestore"; 
 import { db, auth } from "@/firebase";
-import { v4 as uuidv4 } from 'uuid'; // <-- 1. Import uuid
+import { v4 as uuidv4 } from 'uuid';
 
-// ... (interfaces remain the same) ...
+// The structure of one link item from your Firestore database
 interface LinkItem {
   id: string;
   url: string;
@@ -14,11 +14,11 @@ interface LinkItem {
   icon: string;
 }
 
+// The structure of your user's profile document
 interface ProfileData {
   userDisplayName: string;
   links: LinkItem[];
 }
-
 
 export default function View() {
   const [profile, setProfile] = useState<ProfileData | null>(null);
@@ -34,34 +34,22 @@ export default function View() {
           if (docSnap.exists()) {
             const data = docSnap.data();
             
-            // --- 2. FIX: Ensure all links have a unique ID ---
-            const incomingLinks = data.links || [];
-            const sanitizedLinks = incomingLinks.map((link: any) =>{
-              if (!link || typeof link !== 'object'){
-                return {
-                  id: uuidv4(), // Create a new ID if link is invalid
-                  url: "",
-                  title: "Invalid Link",
-                  platformName: "Unknown",
-                  icon: "⚠️", // Default icon for invalid links
-                }
-              }
-              return {
-                id: link.id || uuidv4(), // Use existing ID or create a new one
-                url: link.url || "",
-                title: link.title || "Untitled Link",
-                platformName: link.platformName || "Unknown",
-                icon: link.icon || "🔗", // Default icon if none provided
-              };
-            })
+            // This ensures every link has a unique 'id' for React to use,
+            // without changing the other data.
+            const sanitizedLinks = (data.links || []).map((link: Partial<LinkItem>) => ({
+              id: link.id || uuidv4(),
+              url: link.url || '#', // Use '#' as a fallback URL
+              title: link.title || 'Untitled Link',
+              platformName: link.platformName || 'Link',
+              icon: link.icon || '🔗',
+            }));
 
             setProfile({
               userDisplayName: data.userDisplayName || "User Profile",
-              links: sanitizedLinks, // Use the sanitized array
+              links: sanitizedLinks as LinkItem[],
             });
             setError("");
           } else {
-            // ... (rest of the logic is fine)
             setError("Profile not found. Please save your links first.");
             setProfile(null);
           }
@@ -84,8 +72,7 @@ export default function View() {
     return () => authUnsubscribe();
   }, []);
 
-  // --- 3. THE KEY PROP: Your rendering code was already correct ---
-  // The error happened because the DATA was missing the `id`.
+  // The rendering logic is now simple and direct
   return (
     <>
       <Navbar />
@@ -100,17 +87,19 @@ export default function View() {
             <div className="links-container">
               {profile.links.length > 0 ? (
                 profile.links.map((link) => (
+                  // Each link is rendered as a clickable <a> tag
                   <a
-                    key={link.id} // <-- This line needs a valid, non-null link.id to work
+                    key={link.id}
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="profile-link-card"
                   >
+                    {/* We display the icon, title, and URL from your database */}
                     <span className="link-card-icon">{link.icon}</span>
                     <div className="link-card-info">
                       <span className="link-card-title">{link.title}</span>
-                      <span className="link-card-url">{link.url}</span>
+                      <span className="link-card-url">{link.platformName}</span>
                     </div>
                   </a>
                 ))
