@@ -31,9 +31,12 @@ export default function SignUp() {
   const [username, setUsername] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isEmailSelected, setIsEmailSelected] = useState(true);
+  const [successMessage, setsuccessMessage] = useState("");
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent default form submission behavior
+    setErrorMessage(""); // Reset error message
+    setsuccessMessage(""); // Reset success message
     try {
       if (isEmailSelected) {
         // Create a new user with email and password
@@ -46,13 +49,8 @@ export default function SignUp() {
           createdAt: new Date(),
         });
 
-        // Redirect or show success message here (e.g., navigate to login or profile page)
-        alert("Account created successfully! Please log in.");
-      } else {
-        // For phone number, you would typically use Firebase's phone authentication
-        // However, this requires additional setup and is not covered here
-        alert("Phone number signup is not implemented yet.");
-      }
+        setsuccessMessage(" Account created successfully! please login.");
+      } 
     } catch (error: unknown) {
       // Handle errors during signup
       if (isFirebaseError(error)) {
@@ -153,6 +151,7 @@ export default function SignUp() {
 
           {/* Error message display */}
           {errorMessage && <p className="error-message">{errorMessage}</p>}
+          {successMessage && <p className="success-message">{successMessage}</p>}
         </div>
       </div>
     </>
