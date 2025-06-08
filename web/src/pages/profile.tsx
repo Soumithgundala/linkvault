@@ -68,10 +68,14 @@ export default function ProfileManager() {
           // Check for both old ('socialProfiles') and new ('links') field names
           const dataToProcess = userData.links || userData.socialProfiles; 
 
-          if (dataToProcess && Array.isArray(dataToProcess)) {
+          if (Array.isArray(dataToProcess)) {
             // FIX FOR BLANK PREVIEWS: Convert old data to the new unified format
-            const migratedLinks = dataToProcess.map((item: Partial<LinkItem> & { platform?: string; username?: string }) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const sanitizedLinks = dataToProcess.map((item: any) => {
               // If it's the OLD format (has 'platform' but not 'title')
+              if( !item || typeof item !='object'){
+                return null;
+              }
               if (item.platform && item.username && !item.title) {
                 const platformInfo = socialPlatforms.find(p => p.name === item.platform);
                 return {
@@ -82,11 +86,20 @@ export default function ProfileManager() {
                   icon: platformInfo ? platformInfo.icon : GENERIC_LINK_ICON,
                 };
               }
-              // If it's already new format, just ensure it has an ID for React's key prop
-              if (!item.id) item.id = uuidv4();
-              return item as LinkItem;
-            });
-            setLinks(migratedLinks as LinkItem[]);
+
+              if(item.url &&item.title){
+                const platformInfo = socialPlatforms.find(p => p.domainMatch && item.url.includes(p.domainMatch));
+                return {
+                  id: item.id || uuidv4(), // Ensure it has an ID
+                  url: item.url,
+                  title: item.title,
+                  platformName: platformInfo ? platformInfo.name : item.platformName || item.url.replace(/^https?:\/\//, '').split('/')[0],
+                  icon: platformInfo ? platformInfo.icon : GENERIC_LINK_ICON,
+                };
+              }
+              return null;
+            }).filter(Boolean); // Remove any null entries
+            setLinks(sanitizedLinks as LinkItem[]);
           }
         }
       } catch (err) {

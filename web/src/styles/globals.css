@@ -348,18 +348,74 @@ button:hover {
 }
 
 .view-page {
-  padding: 2rem 1rem;
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 680px;
+  margin: 2rem auto;
+  padding: 0 1rem;
 }
 
 .view-title {
   text-align: center;
-  margin-top: rem;
+  margin-top: 2rem;
   margin-bottom: 2rem;
   color: var(--text-primary);
   font-size: 2rem;
   font-weight: 700;
+}
+.links-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.profile-link-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: #070e15;
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid #717880;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.profile-link-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.link-card-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.link-card-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Prevents long text from breaking layout */
+}
+
+.link-card-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--text)
+}
+
+.link-card-url {
+  font-size: 0.9rem;
+  color: #7c9a47;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Adds '...' for very long URLs */
+}
+
+.error-message {
+  text-align: center;
+  color: #dc3545;
+  background-color: #151515;
+  padding: 1rem;
+  border-radius: 8px;
 }
 
 .profiles-grid {
