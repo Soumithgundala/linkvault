@@ -50,6 +50,7 @@ export default function ProfileManager() {
   const [editableDisplayName, setEditableDisplayName] = useState('');
   const [isEditingName, setIsEditingName] = useState(false);
   const [isUpdatingName, setIsUpdatingName] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   // General loading and error states
   const [loading, setLoading] = useState(false);
@@ -142,7 +143,8 @@ export default function ProfileManager() {
       
       setCurrentUserDisplayName(editableDisplayName.trim());
       setIsEditingName(false);
-      alert("Display name updated!");
+      setSuccessMessage("Display name updated successfully!");
+      setTimeout(() => setSuccessMessage(null), 3000); // Clear message after 3 seconds
     } catch { 
       setError("Failed to update display name."); 
     } finally { 
@@ -225,6 +227,7 @@ export default function ProfileManager() {
   const handleSubmit = async () => {
     setLoading(true);
     setError(null);
+    setSuccessMessage(null);
     try {
       const user = auth.currentUser;
       if (!user) throw new Error('User not authenticated.');
@@ -235,8 +238,10 @@ export default function ProfileManager() {
         socialProfiles: links, // Save to both for full compatibility
         updatedAt: serverTimestamp()
       }, { merge: true });
+
+      setSuccessMessage('Your links have been saved successfully!');
+      setTimeout(() => setSuccessMessage(null), 3000); // Clear message after 3 seconds
       
-      alert('Your links have been saved!');
     } catch (error) { 
       setError(error instanceof Error ? error.message : 'Failed to save links'); 
     } finally { 
@@ -327,6 +332,7 @@ export default function ProfileManager() {
                   </button>
                 </div>
                 {error && <div className="error-message" role="alert">{error}</div>}
+                {successMessage && <div className="success-message" role="status">{successMessage}</div>}
               </div>
             </div>
             
