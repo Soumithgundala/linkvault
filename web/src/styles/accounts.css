@@ -158,8 +158,40 @@
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   animation: fadeIn 0.5s ease;
   margin-bottom: 2rem;
+}
+/* --- Profile Page: Username and Edit Button Alignment Fix --- */
 
+/* This targets the container for the "Welcome" message AND the container for the edit form */
+.user-greeting-display,
+.inline-edit-form {
+  display: flex;          /* Lays out items in a row instead of a column */
+  align-items: center;    /* Vertically aligns the text and buttons to their center */
+  gap: 0.75rem;           /* Adds a nice space between the items */
+  margin-bottom: 2rem;    /* Adds some space below the entire greeting line */
+}
 
+/* Optional styling for the text itself */
+.user-greeting {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #cbd5e1;
+}
+
+/* Styling for the small inline edit/save/cancel icon buttons */
+.inline-edit-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.2s ease;
+}
+
+/* A stable hover effect that does not move the button */
+.inline-edit-button:hover {
+  background-color: #495e78; 
 }
 
 /* Social Profiles Section */
@@ -391,7 +423,7 @@
 @media (max-width: 768px) {
   .input-group {
     display: flex;          /* Switch to flexbox for mobile */
-    flex-direction: column; /* Stack items vertically */
+    flex-direction:column; /* Stack items vertically */
     gap: 1rem;              /* Maintain the gap between items */
   }
 
@@ -401,9 +433,9 @@
   }
 
   .input-group > .add-button {
-    width: auto;           /* Let the button size to its content (not full width) */
-    align-self: center;    /* Center the button */
-    padding: 0.75rem 2rem; /* Ensure it has a good tap size */
+    width: 100%;           /* Let the button size to its content (not full width) */
+    /* align-self: center;    Center the button */
+    padding: 0.8rem; /* Ensure it has a good tap size */
     margin-top: 0.5rem;    /* Optional: Add a little extra space above the button */
   }
 

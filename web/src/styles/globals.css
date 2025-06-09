@@ -109,7 +109,7 @@ input#linkInput:focus {
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
 }
 
-.input-group button {
+.input-section input-group button {
   position: absolute;
   right: 0.5rem;
   top: 50%;
@@ -117,14 +117,14 @@ input#linkInput:focus {
   padding: 0.5rem 1.25rem;
   background: var(--gradient);
   border: none;
-  border-radius: 0.5rem;
+  /* border-radius: 0.5rem; */
   color: white;
   font-weight: 600;
   cursor: pointer;
   transition: transform 0.2s ease;
 }
 
-.input-group button:hover {
+.input-section .input-group button:hover {
   transform: translateY(-50%) scale(1.05);
 }
 
