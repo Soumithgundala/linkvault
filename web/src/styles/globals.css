@@ -246,10 +246,10 @@ input#linkInput:focus {
 .dropdown {
   position: absolute;
   /* right: 10rem; */
-  top: 3.5rem;
+  top: 4.5rem;
   padding: 1rem;
   z-index: 50;
-  right: 80px;
+  right: 1px;
   background-color: #333;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
