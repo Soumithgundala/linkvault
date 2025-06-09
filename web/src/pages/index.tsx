@@ -103,21 +103,13 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="page-container">
+    <div
+      className="page-container"
+      style={{ backgroundImage: `url(${backgroundImage})` }}
+    >
       <Navbar />
-      <main>
-        <section
-          className="hero"
-          style={{ backgroundImage: `url(${backgroundImage})` }}
-        >
-          <div className="hero-overlay">
-            <h1>Your Digital Identity. Sharper Than Ever.</h1>
-            <p>Curate and flex your digital presence.</p>
-          </div>
-        </section>
-
+      <main className="homepage-main">
         <section className="input-section">
-          <label htmlFor="linkInput">Enter a URL:</label>
           <div className="input-group">
             <input
               id="linkInput"
@@ -127,13 +119,21 @@ export default function Home() {
               placeholder="https://example.com"
               aria-label="Enter URL for preview"
             />
-            <button onClick={clearInput} aria-label="Clear input">
-              Clear
-            </button>
+            {link && (
+              <button
+                onClick={clearInput}
+                className="clear-button"
+                aria-label="Clear input"
+              >
+                &times; {/* This is the 'x' symbol*/}
+              </button>
+            )}
+            {/* CORRECTED LINE: Added className="search-button" */}
             <button
               type="button"
               onClick={handleSearch}
-              disabled={isSearching || !link.trim()}
+              className="search-button"
+              disabled={isSearching || !link.trim() || !!error}
             >
               {isSearching ? "Searching..." : "Search"}
             </button>

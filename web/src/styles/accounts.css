@@ -212,7 +212,8 @@
 }
 
 .input-group {
-  display:grid;
+  position: relative;
+  display:flex;
   grid-template-columns: 1fr 2fr auto;
   gap: 1rem;
   align-items: center;

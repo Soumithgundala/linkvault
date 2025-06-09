@@ -21,9 +21,20 @@ body {
 }
 
 .page-container {
+  background-color: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+/* ADD THIS NEW RULE TO globals.css */
+main.homepage-main {
+  /* This pushes the content down from the navbar */
+  padding-top: 8rem; 
+  /* Center the content horizontally */
+  display: flex;
+  justify-content: center;
 }
 
 /* Hero Section */
@@ -76,7 +87,7 @@ body {
 }
 
 /* Input Section */
-.input-section {
+/* .input-section {
   max-width: 800px;
   margin: -5rem auto 3rem;
   padding: 2rem;
@@ -85,14 +96,18 @@ body {
   border-radius: 1rem;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   animation: slideUp 0.8s ease;
-}
+  transform: translateY(-20%);
+} */
 
-.input-group {
+/* .input-group {
   position: relative;
   margin-top: 1.5rem;
-}
+} */
+/* #linkInput {
+  padding-right: 9rem;
+} */
 
-input#linkInput {
+/* input#linkInput {
   width: 100%;
   padding: 1.25rem;
   border: 2px solid #334155;
@@ -101,7 +116,7 @@ input#linkInput {
   color: var(--text);
   font-size: 1.1rem;
   transition: all 0.3s ease;
-}
+} */
 
 input#linkInput:focus {
   outline: none;
@@ -109,7 +124,7 @@ input#linkInput:focus {
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
 }
 
-.input-section input-group button {
+/* .input-section input-group button {
   position: absolute;
   right: 0.5rem;
   top: 50%;
@@ -117,15 +132,148 @@ input#linkInput:focus {
   padding: 0.5rem 1.25rem;
   background: var(--gradient);
   border: none;
-  /* border-radius: 0.5rem; */
+  border-radius: 0.5rem;
   color: white;
   font-weight: 600;
   cursor: pointer;
   transition: transform 0.2s ease;
-}
+} */
 
 .input-section .input-group button:hover {
   transform: translateY(-50%) scale(1.05);
+}
+/* Style for the new clear button */
+/* .clear-button {
+  position: absolute;
+  right: 6.5rem; 
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.5rem;
+} */
+
+/* Style for the main search button */
+/* .search-button {
+  position: absolute;
+  right: 0.5rem; 
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--gradient);
+  border: none;
+  border-radius: 0.5rem;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.75rem 1.25rem;
+} */
+
+.search-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+/* Add this media query to the end of globals.css */
+@media (max-width: 768px) {
+  main.homepage-main{
+    padding-top: 5rem;
+  }
+  /* Make the input section less offset on small screens */
+  .input-section {
+    transform: translateY(-40%);
+    width: 95%;
+    padding: 1rem;
+    margin: 0;
+  }
+
+  /* Make the input text and buttons smaller */
+  #linkInput {
+    padding: 1rem;
+    padding-right: 7.5rem; /* Adjust for smaller buttons */
+    font-size: 1rem;
+  }
+  
+  .search-button {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    background-color: black;
+  }
+
+  .clear-button {
+    right: 5.5rem; /* Adjust position */
+  }
+}
+/* In globals.css */
+/* --- NEW, CORRECTED SEARCH INPUT STYLES --- */
+
+/* The container for the input and buttons */
+.input-group {
+  position: relative; /* This is the ONLY position property needed */
+  display: flex;
+  align-items: center;
+}
+
+/* The main text input field */
+#linkInput {
+  width: 100%;
+  font-size: 1.1rem;
+  background: #1e293b;
+  color: var(--text);
+  border: 2px solid #334155;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  /* Add padding on the right to make space for BOTH buttons */
+  padding-right: 9.5rem; 
+}
+
+#linkInput:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+}
+
+/* The '×' clear button */
+.clear-button {
+  position: absolute;
+  right: 6.5rem; /* Position it to the left of the search button */
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  font-size: 1.75rem; /* Larger for easier clicking */
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+.clear-button:hover {
+  color: white;
+}
+
+/* The main 'Search' button */
+.search-button {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--gradient);
+  border: none;
+  border-radius: 0.5rem;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.75rem 1.25rem;
+  transition: transform 0.2s ease;
+}
+.search-button:hover {
+  transform: translateY(-50%) scale(1.05);
+}
+.search-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* Preview Section */
