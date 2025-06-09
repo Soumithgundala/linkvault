@@ -256,6 +256,7 @@
 
 .profile-item {
   display: flex;
+  cursor: pointer;
   align-items: center;
   padding: 1rem;
   background: var(--background);

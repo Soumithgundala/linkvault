@@ -219,7 +219,8 @@ export default function ProfileManager() {
     setSelectedPlatform('');
   };
 
-  const handleRemoveLink = (idToRemove: string) => {
+  const handleRemoveLink = (e: React.MouseEvent, idToRemove: string) => {
+    e.stopPropagation();
     setLinks(prevLinks => prevLinks.filter(link => link.id !== idToRemove));
   };
   
@@ -342,7 +343,7 @@ export default function ProfileManager() {
                 <h2>Your Added Links</h2>
                 <div className="profiles-list">
                   {links.map((link) => (
-                    <div key={link.id} className="profile-item">
+                    <div key={link.id} className="profile-item" onClick={() => window.open(link.url, '_blank', 'noopener noreferrer')}>
                       <span className="platform-icon">{link.icon}</span>
                       <div className="profile-info">
                         <span className="link-title">{link.title}</span> {/* Shows the full title */}
@@ -350,7 +351,7 @@ export default function ProfileManager() {
                           {link.platformName} {/* Shows the platform/domain */}
                         </a>
                       </div>
-                      <button type="button" onClick={() => handleRemoveLink(link.id)} className="remove-button" disabled={loading}>×</button>
+                      <button type="button" onClick={(e) => handleRemoveLink(e, link.id)} className="remove-button">×</button>
                     </div>
                   ))}
                 </div>
