@@ -139,7 +139,7 @@ export default function SignUp() {
             />
 
             {/* Link to login page */}
-            <Link href="/login" className="signin-link">
+            <Link href="/login" className="form-link">
               Already have an account? Sign In
             </Link>
 

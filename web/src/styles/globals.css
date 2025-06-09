@@ -109,7 +109,7 @@ input#linkInput:focus {
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
 }
 
-button {
+.input-group button {
   position: absolute;
   right: 0.5rem;
   top: 50%;
@@ -124,7 +124,7 @@ button {
   transition: transform 0.2s ease;
 }
 
-button:hover {
+.input-group button:hover {
   transform: translateY(-50%) scale(1.05);
 }
 

@@ -65,36 +65,56 @@
   background-color: #08145f;
   justify-content: center;
   color: white;
-  padding: 0.5rem;
-  margin: auto;
+  padding: 0.75rem;
   border: none;
   border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.3s ease;
   width: 100%;
   box-sizing: border-box;
+  margin-top: 1.5rem;
 }
-.signup-link {
+/* .signup-link {
   text-align: center;
   display: block;
-  margin: 5rem;
+  margin: 1rem;
+  color: white
 }
 .signin-link {
   text-align: center;
   display: block;
-  margin: 10rem;
-}
+  margin: 1rem;
+  color: #fbf9f9;
+} */
 .password-container{
+  position: relative;
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
+  gap: 0.5rem;
   margin-bottom: 1rem;
 }
+.password-container .login-input{
+  flex-grow: 1;
+  margin-bottom:0;
+}
 .toggle-password-button {
+  position: absolute;
+  right: 0.5rem;
   cursor: pointer;
-  left: auto;
+  background-color: transparent;
+  border: none;
+  padding: 0.5rem;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  color: #a0aec0; /* Example color */
+  /* left: auto;
   top: 36.5%;
-  justify-content: baseline;
+  justify-content: baseline; */
+}
+.toggle-password-button:hover {
+  color: #6a6767; /* Change color on hover */
 }
 
 .login-button:hover,
@@ -106,6 +126,20 @@
   color: red;
   font-size: 0.8rem;
   margin-top: 1rem;
+}
+
+.form-link {
+  text-align: center;
+  display: block;
+  margin-top: 1rem;  /* Or a value that fits your design */
+  margin-bottom: 1rem; /* Or a value that fits your design */
+  color: #a0aec0; /* Example color */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.form-link:hover {
+  color: #ffffff;
 }
 /* styles/Profile.module.css */
 
@@ -232,13 +266,16 @@
   color: var(--error);
   font-size: 1.25rem;
   cursor: pointer;
-  padding: 4rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
   transition: all 0.2s ease;
 }
 
-/* .remove-button:hover {
+.remove-button:hover {
+  color:#121111;
+  background-color: #232323;
   transform: scale(1.1);
-} */
+}
 
 /* Coding Profiles Section */
 .coding-section {

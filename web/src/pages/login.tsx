@@ -160,7 +160,7 @@
                     className="login-input"
                     required
                   /> */}
-                  <Link href="/signup" className="signup-link">
+                  <Link href="/signup" className="form-link">
                     Don&apos;t have an account? Sign Up
                   </Link>
                   <button type="submit" className="login-button">
