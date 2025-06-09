@@ -253,7 +253,7 @@ export default function ProfileManager() {
     <>
       <Navbar />
       <div className="profile-container">
-        <h1>Manage Your Public Profiles</h1>
+        {/* <h1>Manage Your Public Profiles</h1> */}
         
         {/* --- Inline Username Edit Section --- */}
         {auth.currentUser && (

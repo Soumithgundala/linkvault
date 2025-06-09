@@ -196,10 +196,12 @@
 
 /* Social Profiles Section */
 .social-section {
-  background: var(--card-bg);
+  width: 100%;
+  background: black;
   border-radius: 12px;
-  padding: 2rem;
+  padding: 1.5rem;
   margin-bottom: 1rem;
+  max-width: 700px;
   /* box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); */
 }
 
@@ -212,8 +214,8 @@
 .input-group {
   display:grid;
   grid-template-columns: 1fr 2fr auto;
- gap: 1rem;
- align-items: center;
+  gap: 1rem;
+  align-items: center;
 }
 
 .platform-select, .username-input {
@@ -262,7 +264,8 @@
 }
 
 .profile-item:hover {
-  transform: translateX(4px);
+  transform: none;
+  background-color: #94a3b8;
 }
 
 .platform-icon {
@@ -442,6 +445,7 @@
   /* ... other mobile styles from your file ... */
   .profile-container {
     padding: 0 1rem;
+    margin-top: 1rem;
   }
 
   h1 {
@@ -451,20 +455,54 @@
   h2 {
     font-size: 1.4rem; /* Slightly adjusted for mobile if needed */
   }
-
   .social-section, .coding-section { /* Assuming .coding-section exists */
     padding: 1rem; /* Reduced padding for sections on mobile */
   }
-}
+  .input-group {
+    gap: 0.75rem; /* This tightens the vertical layout */
+  }
+  /* Make the dropdown and text input fields SHORTER */
+  .input-group > .platform-select,
+  .input-group > .username-input {
+    /* Reduce vertical padding to decrease height */
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+    font-size: 0.9rem; /* Making the font a bit smaller also helps */
+  }
+  /* Make the 'Add' button SHORTER */
+  .input-group > .add-button {
+    /* Reduce vertical padding */
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    margin-top: 0.25rem; /* Reduce space above the button */
+  }
+  }
 
 @media (max-width: 480px) {
   .profile-item {
-    flex-direction: column;
+    /* flex-direction: column; */
     align-items: flex-start;
-    gap: 1rem;
+    gap: 0.2rem;
+    padding: 0.2rem;
+    transition: background-color 0.2s ease;
   }
-
+  .platform-icon{
+    font-size: 1.25rem;
+    margin-right:0.75rem;
+  }
+  .profile-info{
+    flex-grow: 1;
+    min-width: 0;
+  }
+  .profile-info .link-title{
+    font-size: 1rem;
+  }
+  .profile-info .profile-link{
+    font-size: 0.9rem;
+  }
   .remove-button {
+    padding: 0.25rem 0.75rem;
+    font-size: 1rem;
     align-self: flex-end;
   }
 }

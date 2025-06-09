@@ -351,12 +351,13 @@ input#linkInput:focus {
 .view-page {
   max-width: 680px;
   margin: 2rem auto;
-  padding: 0 1rem;
+  padding: 0 2rem;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
 }
 
 .view-title {
   text-align: center;
-  margin-top: 2rem;
   margin-bottom: 2rem;
   color: #b2c2e2;
   font-size: 2rem;
@@ -372,7 +373,7 @@ input#linkInput:focus {
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 1rem;
+  padding: 0.5rem;
   background-color: #070e15;
   border-radius: 8px;
   text-decoration: none;
