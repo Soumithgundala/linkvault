@@ -7,7 +7,7 @@ import { auth } from "@/firebase";
 import { useAuth } from "@/hooks/useAuth";
 
 export default function Navbar() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const [showDropdown, setShowDropdown] = useState(false);
   const router = useRouter();
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -58,7 +58,13 @@ export default function Navbar() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </div>
-        <Link href="/view" className="view-link">{/* View Icon */} View</Link>
+        {!loading && user && user.displayName && (
+          <Link
+            href={`/${encodeURIComponent(user.displayName)}`}
+            className="view-link">{/* View Icon */}
+              View
+          </Link>
+        )}
 
         {showDropdown && (
           <div className="dropdown" ref={dropdownRef}>

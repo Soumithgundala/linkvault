@@ -757,6 +757,7 @@ input#linkInput:focus {
 /* Title spacing */
 .Title-Linkvault {
   margin-right: auto; /* Pushes subsequent elements to right */
+  border-radius: 12px;
 }
 
 @media (max-width: 768px) {
@@ -772,3 +773,114 @@ input#linkInput:focus {
     padding: 0.5rem;
   }
 }
+/* --- CORRECTED SEARCH LAYOUT & STYLING --- */
+
+/* This is the main container for both the input and the results.
+   It creates the centered, "floating card" effect. */
+.search-wrapper {
+  display: flex;
+  flex-direction: column; /* Stacks input and results vertically */
+  gap: 1rem;              /* Creates space between input and results */
+  width: 100%;
+  max-width: 600px;       /* Set a max-width for the entire component */
+  margin: 0 1rem;         /* Add horizontal margin for smaller screens */
+}
+
+/* The container for the search bar.
+   This gives it the glassy, card-like background. */
+.input-section {
+  background: rgba(15, 23, 42, 0.75); /* A bit more opaque */
+  backdrop-filter: blur(10px);         /* The glassy blur effect */
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  animation: slideUp 0.8s ease;
+}
+
+/* This is the section holding the results. 
+   It no longer needs complex margins. */
+.results-section {
+  width: 100%;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* The container for the result cards.
+   This is where we make it slightly narrower than the input section. */
+.search-results-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 98%;      /* Makes it just a little bit shorter than the input box */
+  margin: 0 auto;  /* Centers it perfectly */
+}
+
+/* This is the main clickable link, styled as a card. */
+.result-card-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background-color: #1e293b;
+  border-radius: 0.75rem;
+  border: 1px solid #334155;
+  text-decoration: none;
+  color: var(--text);
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Add a hover effect to make the cards feel interactive. */
+.result-card-link:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.2);
+  border-color: var(--primary);
+}
+
+/* Style the user icon container on the left. */
+.result-card-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: #334155;
+  border-radius: 50%;
+  color: var(--text);
+}
+
+/* The container for the username and platform text. */
+.result-card-text {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+/* The main username text. */
+.result-card-username {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* The smaller platform text (e.g., "LinkVault Profile"). */
+.result-card-platform {
+  font-size: 0.875rem;
+  color: #94a3b8;
+}
+
+/* The chevron icon on the right, indicating it's clickable. */
+.result-card-chevron {
+  color: #64748b;
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Animate the chevron on hover to provide feedback. */
+.result-card-link:hover .result-card-chevron {
+  transform: translateX(3px);
+  color: var(--primary);
+}
+
+/* --- Keep your other styles for .input-group, #linkInput, buttons, etc. --- */
