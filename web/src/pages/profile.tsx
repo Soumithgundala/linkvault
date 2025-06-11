@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { PencilSquare, XSquareFill, CheckSquareFill } from 'react-bootstrap-icons';
 
 // Imports for Drag-and-Drop functionality
-import { DndContext, closestCenter, useSensor, useSensors, PointerSensor, DragEndEvent } from '@dnd-kit/core';
+import { DndContext, closestCenter, useSensor, useSensors, PointerSensor, TouchSensor, DragEndEvent } from '@dnd-kit/core';
 import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
@@ -77,6 +77,12 @@ export default function ProfileManager() {
         useSensor(PointerSensor, {
             activationConstraint: {
                 distance: 8,
+            },
+        }),
+        useSensor(TouchSensor, {
+            activationConstraint: {
+                delay: 250,
+                tolerance: 5,
             },
         })
     );
