@@ -70,7 +70,7 @@ export default function UserProfilePage() {
                 
                 {profile && (
                     <>
-                        <h1 className="view-title">{profile.userDisplayName}&#39;s Links</h1>
+                        <h1 className="view-title">{profile.userDisplayName}</h1>
                         <div className="links-container">
                             {profile.links && profile.links.length > 0 ? (
                                 profile.links.map(link => (
