@@ -882,5 +882,18 @@ input#linkInput:focus {
   transform: translateX(3px);
   color: var(--primary);
 }
+/* Styling for the new drag handle */
+.drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; /* Give it some space */
+  cursor: grab;
+  color: #9ca3af; /* A neutral color */
+  touch-action: none; /* Critical for preventing scrolling on touch */
+}
 
+.drag-handle:active {
+  cursor: grabbing;
+}
 /* --- Keep your other styles for .input-group, #linkInput, buttons, etc. --- */

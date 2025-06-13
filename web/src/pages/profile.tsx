@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { PencilSquare, XSquareFill, CheckSquareFill } from 'react-bootstrap-icons';
 
 // Imports for Drag-and-Drop functionality
-import { DndContext, closestCenter, useSensor, useSensors, PointerSensor, TouchSensor, DragEndEvent } from '@dnd-kit/core';
+import { DndContext, closestCenter, useSensor, useSensors, PointerSensor, TouchSensor, DragEndEvent, DragStartEvent } from '@dnd-kit/core';
 import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
@@ -30,8 +30,8 @@ const socialPlatforms = [
     { name: ADD_OTHER_URL_KEY, icon: '+', placeholder: 'enter your complete url' },
 ];
 
-// --- A component for individual sortable link items ---
-function SortableLinkItem({ link, handleRemoveLink }: { link: LinkItem, handleRemoveLink: (e: React.MouseEvent, id: string) => void }) {
+// A component for a single sortable link item
+function SortableLinkItem({ link, handleRemoveLink, isActive }: { link: LinkItem, handleRemoveLink: (e: React.MouseEvent, id: string) => void, isActive: boolean }) {
     const {
         attributes,
         listeners,
@@ -44,9 +44,16 @@ function SortableLinkItem({ link, handleRemoveLink }: { link: LinkItem, handleRe
         transform: CSS.Transform.toString(transform),
         transition,
     };
+    const itemClassName = isActive ? 'profile-item active' : 'profile-item';
 
     return (
-        <div ref={setNodeRef} style={style} {...attributes} {...listeners} className="profile-item">
+        <div ref={setNodeRef} style={style} {...attributes} {...listeners} className={itemClassName}>
+            <div className='drag-handle' {...attributes} {...listeners}>
+                <svg xmlns ="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-grip-vertical" viewBox="0 0 16 16">
+                    <path d="M2.5 1a.5.5 0 0 1 .5.5v13a.5.5 0 0 1-1 0v-13a.5.5 0 0 1 .5-.5zm3 0a.5.5 0 0 1 .5.5v13a.5.5 0 0 1-1 0v-13a.5.5 0 0 1 .5-.5zm3 0a.5.5 0 0 1 .5.5v13a.5.5 0 0 1-1 0v-13a.5.5 0 0 1 .5-.5zm3 0a.5.5 0 0 1 .5.5v13a.5.5 0 0 1-1 0v-13a.5.5 0 0 1 .5-.5z"/>
+                </svg>
+            </div>
+            {/* <span className="drag-icon">☰</span> */}
             <span className="platform-icon">{link.icon}</span>
             <div className="profile-info">
                 <span className="link-title">{link.title}</span>
@@ -60,7 +67,9 @@ function SortableLinkItem({ link, handleRemoveLink }: { link: LinkItem, handleRe
 }
 
 export default function ProfileManager() {
+    // --- State Definitions ---
     const [links, setLinks] = useState<LinkItem[]>([]);
+    const [activeId, setActiveId] = useState<string | null>(null);
     const [selectedPlatform, setSelectedPlatform] = useState('');
     const [username, setUsername] = useState('');
     const [directUrl, setDirectUrl] = useState('');
@@ -73,19 +82,17 @@ export default function ProfileManager() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+    // ✅ **THE FIX:** The `useSensors` hook is now at the top level of the component.
     const sensors = useSensors(
         useSensor(PointerSensor, {
-            activationConstraint: {
-                distance: 8,
-            },
+            activationConstraint: { distance: 8 },
         }),
         useSensor(TouchSensor, {
-            activationConstraint: {
-                delay: 250,
-                tolerance: 5,
-            },
+            activationConstraint: { delay: 250, tolerance: 5 },
         })
     );
+
+    // --- Component Logic and Handlers ---
 
     useEffect(() => {
         const fetchUserProfileData = async (userId: string, user: import("firebase/auth").User) => {
@@ -135,6 +142,11 @@ export default function ProfileManager() {
         });
         return () => unsubscribe();
     }, []);
+
+    const handleDragStart = (event: DragStartEvent) => {
+        setActiveId(event.active.id as string);
+    };
+
 
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event;
@@ -245,7 +257,7 @@ export default function ProfileManager() {
             setLoading(false);
         }
     };
-
+    // --- JSX to render the page ---
     return (
         <>
             <Navbar />
@@ -293,11 +305,16 @@ export default function ProfileManager() {
                         {links.length > 0 && (
                             <div className="profiles-list-container">
                                 <h2>Your Added Links (Drag to Reorder)</h2>
-                                <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                                <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
                                     <SortableContext items={links} strategy={verticalListSortingStrategy}>
                                         <div className="profiles-list">
                                             {links.map(link => (
-                                                <SortableLinkItem key={link.id} link={link} handleRemoveLink={handleRemoveLink} />
+                                                <SortableLinkItem 
+                                                    key={link.id} 
+                                                    link={link} 
+                                                    handleRemoveLink={handleRemoveLink} 
+                                                    isActive={link.id === activeId}
+                                                />
                                             ))}
                                         </div>
                                     </SortableContext>
@@ -309,6 +326,7 @@ export default function ProfileManager() {
                     <p style={{ textAlign: 'center', marginTop: '2rem' }}>Please sign in to manage your profiles.</p>
                 )}
             </div>
+
             {auth.currentUser && links.length > 0 && (
                 <div className="save-button-container">
                     <button type="button" onClick={handleSubmit} disabled={loading} className="save-button">
