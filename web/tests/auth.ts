@@ -19,11 +19,18 @@ test('auth', async({page})=>{
     const passwordClick= page.locator('.password-input');
     await passwordClick.click();
     // type password    
-    await passwordClick.fill('soumitt@88');
+    await passwordClick.fill('Soumitt@88');
     // click on login button
     const loginButton2=page.locator('.login-button');
     await loginButton2.click();
     // check for url change in page
     expect(currentUrl.includes('/profile'));
+    // check if profile contains welcome greetinng
+    const greetingWelcome= page.locator('.user-greeting');
+    expect(greetingWelcome).toBeVisible();
+    // add profiles in the profile
+    const addProfileDropdown=page.locator('.platform-select');
+    await addProfileDropdown.click();
+    await expect(addProfileDropdown).toContainText('Instagram');
  
 });

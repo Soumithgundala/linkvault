@@ -61,7 +61,7 @@ function SortableLinkItem({ link, handleRemoveLink, isActive }: { link: LinkItem
                     {link.platformName}
                 </a>
             </div>
-            <button type="button" onClick={(e) => handleRemoveLink(e, link.id)} className="remove-button">×</button>
+            <button type="button" onClick={(e) =>  handleRemoveLink(e, link.id)} className="remove-button">×</button>
         </div>
     );
 }
@@ -283,7 +283,7 @@ export default function ProfileManager() {
                             <div className="profile-form">
                                 <div className="input-group">
                                     <select value={selectedPlatform} onChange={(e) => setSelectedPlatform(e.target.value)} className="platform-select">
-                                        <option value="">Select Platform...</option>
+                                        <option value="" className='profile-Select-Dropdown'>Select Platform...</option>
                                         {socialPlatforms.map((platform) => (<option key={platform.name} value={platform.name}>{platform.icon} {platform.name}</option>))}
                                     </select>
                                     {selectedPlatform && selectedPlatform !== ADD_OTHER_URL_KEY && (
