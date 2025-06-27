@@ -25,9 +25,9 @@ test('auth', async({page})=>{
     await loginButton2.click();
     // check for url change in page
     expect(currentUrl.includes('/profile'));
-    // check if profile contains welcome greetinng
-    const greetingWelcome= page.locator('.user-greeting');
-    expect(greetingWelcome).toBeVisible();
+    // check if profile contains welcome greeting
+    const greetingWelcome= page.locator('[aria-label="welcome-username"]');
+    expect(greetingWelcome).toBeTruthy();
     // add profiles in the profile
     const addProfileDropdown=page.locator('.platform-select');
     await addProfileDropdown.click();

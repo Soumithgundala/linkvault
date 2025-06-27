@@ -264,7 +264,7 @@ export default function ProfileManager() {
             <div className="profile-container">
                 {loading ? <p style={{textAlign: 'center'}}>Loading...</p> : auth.currentUser ? (
                     <>
-                        <div className="welcome-and-edit-container">
+                        <div className="welcome-and-edit-container" id="welcome-and-edit-container" aria-label='welcome-username'>
                             {!isEditingName ? (
                                 <div className="user-greeting-display">
                                     <p className="user-greeting">Welcome, {currentUserDisplayName}!</p>
